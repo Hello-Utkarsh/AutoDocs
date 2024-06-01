@@ -9,12 +9,7 @@ function App() {
 
   return (
     <div>
-      <SignedOut>
-        <SignInButton />
-      </SignedOut>
-      <SignedIn>
-        <UserButton />
-      </SignedIn>
+      Landing Page
     </div>
   )
 }

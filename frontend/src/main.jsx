@@ -7,6 +7,7 @@ import {
   createBrowserRouter,
   RouterProvider,
 } from "react-router-dom";
+import Dashboards from './Dashboards.jsx'
 
 const PUBLISHABLE_KEY = import.meta.env.VITE_CLERK_PUBLISHABLE_KEY
 
@@ -19,6 +20,10 @@ const router = createBrowserRouter([
     path: "/",
     element: <App />,
   },
+  {
+    path: '/main',
+    element: <Dashboards/>
+  }
 ]);
 
 ReactDOM.createRoot(document.getElementById('root')).render(
