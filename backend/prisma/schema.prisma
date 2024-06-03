@@ -13,3 +13,46 @@ datasource db {
   url       = env("DATABASE_URL")
   directUrl = env("DIRECT_URL")
 }
+
+model notes {
+  id           Int      @id @default(autoincrement())
+  content      String   @db.VarChar(280)
+  type         Type
+  user_id      Int
+  publish      Boolean
+  formate_text String
+  format       format   @relation(fields: [id], references: [id])
+  created_at   DateTime @default(now())
+}
+
+model docs {
+  id           Int      @id @default(autoincrement())
+  content      String
+  type         Type
+  user_id      Int
+  publish      Boolean
+  formate_text String
+  format       format   @relation(fields: [id], references: [id])
+  created_at   DateTime @default(now())
+}
+
+model tables {
+  id           Int    @id @default(autoincrement())
+  name         String
+  content      Type
+  formate_text String
+  format       format @relation(fields: [id], references: [id])
+}
+
+model format {
+  id      Int      @id @default(autoincrement())
+  content String
+  tables  tables[]
+  docs    docs[]
+  notes   notes[]
+}
+
+enum Type {
+  Markdown
+  text
+}

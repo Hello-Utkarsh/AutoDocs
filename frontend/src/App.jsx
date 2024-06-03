@@ -8,8 +8,16 @@ function App() {
   const [count, setCount] = useState(0)
 
   return (
-    <div>
-      Landing Page
+    <div className='text-white text-5xl'>
+      {/* Login and Signin buttons by clerk */}
+      <div>
+        <SignedOut>
+          <SignInButton />
+        </SignedOut>
+        <SignedIn>
+          <UserButton />
+        </SignedIn>
+      </div>
     </div>
   )
 }
