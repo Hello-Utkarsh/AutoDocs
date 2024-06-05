@@ -40,3 +40,73 @@
 .read-the-docs {
   color: #888;
 }
+
+.mdxeditor-toolbar {
+  display: flex;
+  background-color: #1A120B;
+}
+
+.mdxeditor-toolbar > div {
+  color: #E5E5CB;
+  background-color: #1A120B;
+}
+
+.mdxeditor-toolbar > div > div {
+  display: flex;
+  color: #E5E5CB;
+  margin-left: 8px;
+  margin-right: 8px;
+}
+
+.mdxeditor-diff-source-wrapper > p {
+  text-align: start;
+  color: #1a120b;
+}
+
+._contentEditable_yms4a_379 {
+  text-align: start;
+  color: #1a120b;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+._contentEditable_yms4a_379 > ol {
+  text-align: start;
+  list-style-type: decimal;
+  color: #1a120b;
+  padding-left: 10px;
+}
+
+._contentEditable_yms4a_379 > ul {
+  text-align: start;
+  color: #1a120b;
+  padding-left: 15px;
+}
+
+._contentEditable_yms4a_379 > ul > li[role="checkbox"] {
+  /* list-style-type: none;
+  position: relative;
+  outline: none;
+  position: relative; */
+  position: relative;
+  display: list-item;
+  margin-left: 0;
+  margin-right: 0;
+  margin-inline-start: -1rem;
+  padding-left: var(--spacing-6);
+  padding-right: var(--spacing-6);
+  list-style-type: none;
+  outline: none;
+}
+
+._contentEditable_yms4a_379 > ul > li:not([role="checkbox"]) {
+  list-style-type: disc;
+}
+
+.prose {
+  font-family: "Inter", sans-serif;
+}
+
+.prose strong {
+  font-weight: 600;
+}
