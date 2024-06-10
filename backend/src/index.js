@@ -1,5 +1,6 @@
 const express = require('express')
-const router = require('./tables/tables')
+const table = require('./tables/tables')
+const docs = require('./docs/docs')
 const parser = require('body-parser')
 const cors = require('cors')
 const app = express()
@@ -11,7 +12,8 @@ app.get('/', (req, res) => {
   res.send('Hello World!')
 })
 
-app.use('/table', router)
+app.use('/table', table)
+app.use('/docs', docs)
 
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`)

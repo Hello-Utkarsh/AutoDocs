@@ -8,13 +8,12 @@ const tableCheck = z.object({
     user_id: z.string(),
     name: z.string(),
     content: z.enum(["notes", "docs"]),
-    format: z.string()
 })
 
 // create tables
 router.post('/create', async (req, res) => {
-    const { name, content, format, user_id } = await req.body
-    const parsedData = await tableCheck.safeParseAsync({ name, content, format, user_id })
+    const { name, content, user_id } = await req.body
+    const parsedData = await tableCheck.safeParseAsync({ name, content, user_id })
     if (!parsedData.success) {
         return res.send({ message: "Invalid Data" }).status(404)
     }
@@ -22,7 +21,6 @@ router.post('/create', async (req, res) => {
         data: {
             name: name,
             content: content,
-            formate_text: format,
             user_id: user_id
         }
     })

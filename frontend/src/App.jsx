@@ -39,11 +39,9 @@ function App() {
   }
 
 
-  // abc()
-
   return (
     <div className='text-white text-xl'>
-      <Navbar />
+      {/* <Navbar /> */}
     </div>
   )
 }

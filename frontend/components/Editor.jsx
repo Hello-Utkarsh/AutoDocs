@@ -1,30 +1,49 @@
-import React from 'react'
-import { BoldItalicUnderlineToggles, ChangeCodeMirrorLanguage, codeBlockPlugin, codeMirrorPlugin, ConditionalContents, InsertCodeBlock, insertCodeBlock$, InsertSandpack, listsPlugin, ListsToggle, MDXEditor, sandpackPlugin, ShowSandpackInfo, toolbarPlugin, UndoRedo } from '@mdxeditor/editor'
-import { headingsPlugin } from '@mdxeditor/editor'
-// import '@mdxeditor/editor/style.css'
+import React, { useEffect, useState } from 'react'
+import { BlockTypeSelect, BoldItalicUnderlineToggles, codeBlockPlugin, codeMirrorPlugin, ConditionalContents, InsertCodeBlock, listsPlugin, ListsToggle, MDXEditor, toolbarPlugin, UndoRedo, headingsPlugin, Button } from '@mdxeditor/editor'
+import '@mdxeditor/editor/style.css'
 
 const Editor = () => {
 
-    const markdown = `
-  * Item 1
-  * Item 2
-  * Item 3
-    * nested item
+    const abc = async() => {
+        const a = await fetch('http://localhost:3000/docs/get-docs', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({'table_id': 4})
+        })
 
-  1. Item 1
-  2. Item 2
-`
+        const b = await a.json()
+        setNotes(b.docs[0].content)
+    }
+
+    
+    const [notes, setNotes] = useState("")
+    let markdown = "# **Welcome**"
+    
+
+    useEffect(()=>{
+        abc()
+    }, [])
+
+    const save = async () => {
+        console.log(JSON.stringify(notes))
+    }
+    // console.log(notes)
+
     return (
-        <div className='w-[50%] h-[80%]'>
-            <MDXEditor contentEditableClassName="prose" className='border-4 border-[#1A120B] text-center' markdown={markdown} plugins={[headingsPlugin(), listsPlugin(), codeBlockPlugin({ defaultCodeBlockLanguage: 'js' }),
+        <div className='w-[70%] bg-[#E5E5CB] border-4 border-[#E5E5CB] rounded-xl text-center overflow-y-scroll overflow-x-hidden'>
+            {markdown ? <MDXEditor contentEditableClassName="prose" markdown={markdown} plugins={[headingsPlugin() ,listsPlugin(), codeBlockPlugin({ defaultCodeBlockLanguage: 'js' }),
             codeMirrorPlugin({ codeBlockLanguages: { js: 'JavaScript', css: 'CSS' } }),
             toolbarPlugin({
                 toolbarContents: () => (
                     <>
                         {' '}
-                        <div className='w-full bg-[#1A120B] flex'>
+                        <div className='w-full bg-[#1A120B] flex h-9'>
                             <UndoRedo />
-                            <span className='h-8 -mt-1 w-[1px] bg-[#D5CEA3]' />
+                            <span className='h-[35px] -mt-1 w-[1px] bg-[#D5CEA3]' />
+                            <BlockTypeSelect/>
+                            <span className='h-[35px] -mt-1 w-[1px] bg-[#D5CEA3]' />
                             <BoldItalicUnderlineToggles />
                             <span className='h-8 -mt-1 w-[1px] bg-[#D5CEA3]' />
                             <ListsToggle />
@@ -38,10 +57,13 @@ const Editor = () => {
                                     }
                                 ]}
                             />
+                            <Button onClick={save}>Save</Button>
+                            <Button>Publish</Button>
                         </div>
                     </>
                 )
-            })]} />
+            })]} /> :null}
+            
         </div>
     )
 }

@@ -15,35 +15,34 @@ datasource db {
 }
 
 model notes {
-  id           Int      @id @default(autoincrement())
-  content      String   @db.VarChar(280)
-  user_id      String
-  publish      Boolean
-  formate_text String?
-  created_at   DateTime @default(now())
-  table_id     Int
-  tables       tables   @relation(fields: [table_id], references: [id])
+  id         Int      @id @default(autoincrement())
+  name       String
+  content    String   @db.VarChar(280)
+  user_id    String
+  publish    Boolean
+  created_at DateTime @default(now())
+  table_id   Int
+  tables     tables   @relation(fields: [table_id], references: [id])
 }
 
 model docs {
-  id           Int      @id @default(autoincrement())
-  content      String
-  user_id      String
-  publish      Boolean
-  formate_text String?
-  table_id     Int
-  tables       tables   @relation(fields: [table_id], references: [id])
-  created_at   DateTime @default(now())
+  id         Int      @id @default(autoincrement())
+  name       String
+  content    String
+  user_id    String
+  publish    Boolean
+  table_id   Int
+  tables     tables   @relation(fields: [table_id], references: [id])
+  created_at DateTime @default(now())
 }
 
 model tables {
-  id           Int     @id @default(autoincrement())
-  user_id      String
-  name         String
-  content      Type
-  formate_text String
-  notes        notes[]
-  docs         docs[]
+  id      Int     @id @default(autoincrement())
+  user_id String
+  name    String
+  content Type
+  notes   notes[]
+  docs    docs[]
 }
 
 enum Type {

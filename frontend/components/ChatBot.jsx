@@ -16,16 +16,17 @@ async function GenerateChat(prompt) {
 const ChatBot = () => {
   const [prompt, setPropmt] = useState("")
   const [chat, setChat] = useState({})
+
   const Chat = async () => {
     const response = await GenerateChat(prompt)
     setChat([prompt, response])
   }
+
   return (
-    <div>
+    <div className='w-[29%] bg-[#E5E5CB] rounded-l-xl'>
       <input onChange={(e) => setPropmt(e.target.value)} className='chat-input' type="text" />
       <button onClick={Chat}>Submit</button>
       <p className='text-black text-4xl'>{chat[1] ? chat[1] : "nothing"}</p>
-      <p>hello</p>
     </div>
   )
 }

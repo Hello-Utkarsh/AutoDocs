@@ -1,24 +1,10 @@
 #root {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 2rem;
   text-align: center;
+  color: #1A120B;
+  /* height: 100vh; */
 }
 
-.logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
-  transition: filter 300ms;
-}
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
-}
-.logo.react:hover {
-  filter: drop-shadow(0 0 2em #61dafbaa);
-}
-
-@keyframes logo-spin {
+/* @keyframes logo-spin {
   from {
     transform: rotate(0deg);
   }
@@ -39,10 +25,14 @@
 
 .read-the-docs {
   color: #888;
-}
+} */
 
 .mdxeditor-toolbar {
+  padding: 0px !important;
+  border-radius: 0px !important;
+  margin: 0 !important;
   display: flex;
+  align-items: center;
   background-color: #1A120B;
 }
 
@@ -83,30 +73,47 @@
   padding-left: 15px;
 }
 
-._contentEditable_yms4a_379 > ul > li[role="checkbox"] {
-  /* list-style-type: none;
-  position: relative;
-  outline: none;
-  position: relative; */
-  position: relative;
-  display: list-item;
-  margin-left: 0;
-  margin-right: 0;
-  margin-inline-start: -1rem;
-  padding-left: var(--spacing-6);
-  padding-right: var(--spacing-6);
-  list-style-type: none;
-  outline: none;
-}
-
 ._contentEditable_yms4a_379 > ul > li:not([role="checkbox"]) {
   list-style-type: disc;
 }
 
-.prose {
-  font-family: "Inter", sans-serif;
+.mdxeditor-toolbar > div > div > div > button > span > svg {
+  color: #E5E5CB;
 }
 
-.prose strong {
-  font-weight: 600;
+.mdxeditor-toolbar > div > div > button > span > svg {
+  color: #E5E5CB;
+}
+
+.mdxeditor-toolbar > div > div > div > button > span :hover {
+  background-color: #1A120B !important;
+}
+
+.mdxeditor-toolbar > div > div > button {
+  margin-top: 2px !important;
+  height: 30px !important;
+}
+
+.mdxeditor-toolbar > div > div > button:hover {
+  background-color: #1A120B !important;
+  outline: #E5E5CB solid 2px;
+}
+
+.mdxeditor-toolbar > div > button {
+  margin-top: 2px;
+  height: 30px;
+}
+
+.mdxeditor-toolbar > div > button:hover {
+  background-color: #1A120B !important;
+  outline: #E5E5CB solid 2px;
+}
+
+._toolbarToggleItem_yms4a_206[data-state=on] {
+  outline: #E5E5CB solid 1px;
+  background-color: #1A120B !important;
+}
+
+._codeMirrorWrapper_yms4a_391 {
+  background-color: white;
 }

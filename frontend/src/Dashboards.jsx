@@ -5,12 +5,9 @@ import Editor from '../components/Editor'
 
 const Dashboards = () => {
   return (
-    <div>
-      <Navbar />
-      <div className='flex justify-around w-full mt-16 h-[80vh]'>
-        <Editor />
-        <ChatBot />
-      </div>
+    <div className='flex justify-between w-[83%] h-[80vh]'>
+      <Editor />
+      <ChatBot />
     </div>
   )
 }
