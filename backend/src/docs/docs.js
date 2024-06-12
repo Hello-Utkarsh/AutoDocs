@@ -53,4 +53,19 @@ router.post('/get-docs', async (req, res) => {
     }
 })
 
+router.post('/get-docs-id', async (req, res) => {
+    try {
+        const { note_id } = await req.body
+        if (typeof (note_id) !== 'number') {
+            return res.send({ message: "Invalid Data" }).status(404)
+        }
+        const docs = await prisma.docs.findFirst({
+            where: { id: note_id }
+        })
+        return res.send({ message: 'success', docs }).status(200)
+    } catch (error) {
+        return res.send({ message: error.message }).status(error.status)
+    }
+})
+
 module.exports = router

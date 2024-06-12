@@ -1,4 +1,3 @@
-const { string } = require('zod')
 const prisma = require('../../prisma/db')
 const express = require('express')
 const router = express.Router()
@@ -16,6 +15,12 @@ router.post('/create', async (req, res) => {
     const parsedData = await tableCheck.safeParseAsync({ name, content, user_id })
     if (!parsedData.success) {
         return res.send({ message: "Invalid Data" }).status(404)
+    }
+    const exist_table = await prisma.tables.findFirst({
+        where: {name: name}
+    })
+    if (exist_table) {
+        return res.send({message: "Table already exists"})
     }
     await prisma.tables.create({
         data: {

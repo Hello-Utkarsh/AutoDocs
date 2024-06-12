@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom/client'
 import App from './App.jsx'
 import './index.css'
 import { ClerkProvider } from '@clerk/clerk-react'
+import { RecoilRoot } from 'recoil'
 import {
   BrowserRouter,
   createBrowserRouter,
@@ -34,16 +35,18 @@ const router = createBrowserRouter([
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
     <ClerkProvider publishableKey={PUBLISHABLE_KEY}>
-      <BrowserRouter>
-        <Routes>
-          <Route path='/' element = {<Navbar/>}>
-            <Route path="/" element={<App />} />
-            <Route path="/main" element={<SideBar />}>
-              <Route index element={<Dashboards />} />
+      <RecoilRoot>
+        <BrowserRouter>
+          <Routes>
+            <Route path='/' element={<Navbar />}>
+              <Route path="/" element={<App />} />
+              <Route path="/main" element={<SideBar />}>
+                <Route index element={<Dashboards />} />
+              </Route>
             </Route>
-          </Route>
-        </Routes>
-      </BrowserRouter>
+          </Routes>
+        </BrowserRouter>
+      </RecoilRoot>
     </ClerkProvider>
   </React.StrictMode>,
 )
