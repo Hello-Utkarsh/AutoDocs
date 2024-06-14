@@ -11,7 +11,7 @@ const Editor = () => {
     const set_created_doc = useSetRecoilState(doc_created)
     const [markdown, setMarkdown] = useState("# **Welcome**")
     const [key, setKey] = useState(true)
-    const [notes, setNotes] = useState("")
+    // const [notes, setNotes] = useState("")
     const user = useUser()
     const select_note_id = useRecoilValue(note_id)
 
@@ -63,11 +63,11 @@ const Editor = () => {
                         publish: false
                     })
                 })
-    
+
                 const response = await req.json()
                 console.log(response)
                 setTableId(false)
-                set_created_doc(true)
+                set_created_doc(p => !p)
             } catch (error) {
                 console.log(error)
             }
@@ -76,7 +76,7 @@ const Editor = () => {
 
     return (
         <div className='w-[70%] bg-[#E5E5CB] border-4 border-[#E5E5CB] rounded-xl text-center overflow-y-scroll overflow-x-hidden'>
-            {markdown && <MDXEditor key={key} onChange={(e) => {if (e !== "") {setMarkdown(e)}}} markdown={markdown} contentEditableClassName="prose" plugins={[headingsPlugin(), listsPlugin(), codeBlockPlugin({ defaultCodeBlockLanguage: 'js' }),
+            {markdown && <MDXEditor key={key} onChange={(e) => { if (e !== "") { setMarkdown(e) } }} markdown={markdown} contentEditableClassName="prose" plugins={[headingsPlugin(), listsPlugin(), codeBlockPlugin({ defaultCodeBlockLanguage: 'js' }),
             codeMirrorPlugin({ codeBlockLanguages: { js: 'JavaScript', css: 'CSS' } }),
             toolbarPlugin({
                 toolbarContents: () => (

@@ -17,10 +17,10 @@ router.post('/create', async (req, res) => {
         return res.send({ message: "Invalid Data" }).status(404)
     }
     const exist_table = await prisma.tables.findFirst({
-        where: {name: name}
+        where: { name: name }
     })
     if (exist_table) {
-        return res.send({message: "Table already exists"})
+        return res.send({ message: "Table already exists" })
     }
     await prisma.tables.create({
         data: {
@@ -47,9 +47,8 @@ router.post('/get-table', async (req, res) => {
 })
 
 // update table
-router.post('/update', async (req, res) => {
+router.put('/update', async (req, res) => {
     const { table_id, name, format, content } = await req.body
-    console.log(typeof (content))
     if (typeof (name) !== "string" || typeof (format) !== "string" || typeof (content) !== "string" || typeof (table_id) !== "number") {
         return res.send({ message: "Invalid Data" }).status(404)
     }
@@ -65,6 +64,20 @@ router.post('/update', async (req, res) => {
     })
 
     return res.send({ message: "success", updated_table }).status(200)
+})
+
+router.delete('/delete', async (req, res) => {
+    const { table_id } = await req.body
+    if (typeof (table_id) !== 'number') {
+        return res.send({ message: "Invalid Data" })
+    }
+    await prisma.docs.deleteMany({
+        where: { table_id: table_id }
+    })
+    await prisma.tables.delete({
+        where: { id: table_id }
+    })
+    return res.send({ message: "success" }).status(200)
 })
 
 

@@ -14,3 +14,8 @@ export const doc_created = atom({
     key: 'doc_created',
     default: false
 })
+
+export const user_table = atom({
+    key: 'user_table',
+    default: []
+})
