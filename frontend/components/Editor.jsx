@@ -76,7 +76,8 @@ const Editor = () => {
 
     return (
         <div className='w-[70%] bg-[#E5E5CB] border-4 border-[#E5E5CB] rounded-xl text-center overflow-y-scroll overflow-x-hidden'>
-            {markdown && <MDXEditor key={key} onChange={(e) => { if (e !== "") { setMarkdown(e) } }} markdown={markdown} contentEditableClassName="prose" plugins={[headingsPlugin(), listsPlugin(), codeBlockPlugin({ defaultCodeBlockLanguage: 'js' }),
+            {markdown && <MDXEditor key={key} onChange={(e) => { if (e !== "") { setMarkdown(e) } }} markdown={markdown} contentEditableClassName="prose" plugins={[headingsPlugin(), listsPlugin(),
+            codeBlockPlugin({ defaultCodeBlockLanguage: 'js' }),
             codeMirrorPlugin({ codeBlockLanguages: { js: 'JavaScript', css: 'CSS' } }),
             toolbarPlugin({
                 toolbarContents: () => (

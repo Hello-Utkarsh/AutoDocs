@@ -33,8 +33,8 @@ const SideBar = () => {
   return (
     <div className='flex mt-20 w-full justify-between'>
       <div className='w-[16%] rounded-r-xl bg-[#E5E5CB] h-[80vh] text-left py-4'>
-        {table ? table.map((t) => {
 
+        {(table.length>0) && table.map((t) => {
           return (
             <div id='xyz' className='my-1 py-1 w-full rounded-sm'>
               <div className='flex justify-between pl-3 py-1 pr-5 bg-[#3C2A21] text-[#E5E5CB] items-center'>
@@ -52,7 +52,7 @@ const SideBar = () => {
               </div>
             </div>
           )
-        }) : <p className='flex justify-between pl-3 pr-5 hover:bg-[#3C2A21] hover:text-[#E5E5CB] items-center'>No Table</p>}
+        })}
 
         <button onClick={() => setDialog(true)} className='my-1 px-3 py-1 w-full rounded-sm text-start hover:bg-[#3C2A21] hover:text-[#E5E5CB]'>New Table</button>
 

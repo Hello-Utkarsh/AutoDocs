@@ -130,3 +130,12 @@
 ._codeMirrorWrapper_yms4a_391 {
   background-color: white;
 }
+
+.chat-mdx ._contentEditable_yms4a_379 > * {
+  color: #E5E5CB;
+}
+
+.chat-mdx ._code_1tncs_52 {
+  background-color: #3C2A21 !important;
+  color: #E5E5CB !important;
+}
