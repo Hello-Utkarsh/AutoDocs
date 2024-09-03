@@ -10,52 +10,42 @@ function App() {
   const navigate = useNavigate()
 
   useEffect(() => {
-    // if (user.isSignedIn) {
-    //   navigate('/main')
-    // }
-    console.log("object")
+    if (user.isSignedIn) {
+      navigate('/main')
+    }
   })
 
 
   return (
-    <div className='text-white text-xl text-start'>
+    <div className='text-white text-xl text-start bg-[#3C2A21] w-full'>
       <div className="flex flex-col min-h-[100dvh] bg-[#1A120B] text-[#D5CEA3]">
         <main className="flex-1">
-          <section className="w-full py-12 md:py-24 lg:py-32 xl:py-48 bg-[#3C2A21]">
-            <div className="container px-4 md:px-6">
-              <div className="grid gap-6 lg:grid-cols-[1fr_400px] lg:gap-12 xl:grid-cols-[1fr_600px]">
-                <div className="flex flex-col justify-center text-start space-y-4">
-                  <div className="space-y-2">
-                    <h1 className="text-3xl font-['Yeseva_One'] font-bold tracking-tighter sm:text-5xl xl:text-6xl/none text-[#D5CEA3]">
-                      Take Notes with Ease
-                    </h1>
-                    <p className="max-w-[600px] font-['Prata'] text-[#E5E5CB] md:text-xl dark:text-[#E5E5CB]">
-                      Our note-taking app makes it simple to capture your ideas, thoughts, and to-dos. Access your notes
-                      from anywhere, anytime.
-                    </p>
-                  </div>
-                  <div className="flex flex-col gap-2 min-[400px]:flex-row">
-                    <Link
-                      href="#"
-                      className="inline-flex h-10 items-center justify-center rounded-md border border-[#D5CEA3] bg-[#1A120B] px-8 text-sm font-medium shadow-sm transition-colors hover:bg-[#3C2A21] hover:text-[#D5CEA3] focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-[#3C2A21] disabled:pointer-events-none disabled:opacity-50"
-                      prefetch={false}
-                    >
-                      SignIn
-                    </Link>
-                  </div>
+          <section className="w-full pt-12 max-md:py-24 max-lg:pt-32 max-xl:pt-48 bg-[#3C2A21]">
+            <div className="container px-4 md:px-6 mx-auto">
+              <div className="flex flex-col justify-center space-y-4 w-full h-[80vh]">
+                <div className="space-y-2">
+                  <h1 className="text-3xl font-['Yeseva_One'] font-bold tracking-tighter sm:text-5xl xl:text-6xl/none text-[#D5CEA3] text-center mx-auto mb-8">
+                    Take Notes with Ease
+                  </h1>
+                  <p className="max-w-[600px] font-['Prata'] text-pretty text-center mx-auto text-[#E5E5CB] md:text-2xl dark:text-[#E5E5CB]">
+                    Our note-taking app makes it simple to capture your ideas, thoughts, and to-dos. Access your notes
+                    from anywhere, anytime.
+                  </p>
                 </div>
-                <img
-                  src="/placeholder.svg"
-                  width="550"
-                  height="550"
-                  alt="Hero"
-                  className="mx-auto aspect-video overflow-hidden rounded-xl object-cover sm:w-full lg:order-last lg:aspect-square"
-                />
+                <div className="flex flex-col gap-2 min-[400px]:flex-row mx-auto">
+                  <Link
+                    href="#"
+                    className="inline-flex h-10 items-center justify-center rounded-md border border-[#D5CEA3] bg-[#1A120B] px-8 text-sm font-medium shadow-sm transition-colors hover:bg-[#3C2A21] hover:text-[#D5CEA3] focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-[#3C2A21] disabled:pointer-events-none disabled:opacity-50"
+                    prefetch={false}
+                  >
+                    SignIn
+                  </Link>
+                </div>
               </div>
             </div>
           </section>
           <section className="w-full py-12 md:py-24 lg:py-32 bg-[#1A120B]">
-            <div className="container px-4 md:px-6">
+            <div className="container px-4 md:px-6 mx-auto">
               <div className="flex flex-col items-center justify-center space-y-4 text-center">
                 <div className="space-y-2">
                   <div className="inline-block rounded-lg bg-[#3C2A21] px-3 py-1 text-sm text-[#D5CEA3]">
@@ -103,14 +93,14 @@ function App() {
             </div>
           </section>
           <section className="w-full py-12 md:py-24 lg:py-32 bg-[#3C2A21]">
-            <div className="container px-4 md:px-6">
-              <div className="flex flex-col items-center justify-center space-y-4 text-center">
+            <div className="container px-4 md:px-6 mx-auto">
+              <div className="flex flex-col items-center justify-center space-y-4 text-center h-[35vh]">
                 <div className="space-y-2">
                   <div className="inline-block rounded-lg bg-[#1A120B] px-3 py-1 text-sm text-[#D5CEA3]">
                     Deployment Platforms
                   </div>
-                  <h2 className="text-3xl font-bold tracking-tighter sm:text-5xl text-[#D5CEA3]">Deploy Anywhere</h2>
-                  <p className="max-w-[900px] text-[#E5E5CB] md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">
+                  <h2 className="text-3xl h-16 font-bold tracking-tighter sm:text-5xl text-[#D5CEA3]">Deploy Anywhere</h2>
+                  <p className="max-w-[900px] text-pretty text-center text-[#E5E5CB] md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">
                     Our note-taking app can be easily deployed to a variety of platforms, including Hashnode, Medium, and
                     Twitter.
                   </p>
