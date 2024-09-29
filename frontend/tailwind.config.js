@@ -6,7 +6,17 @@ export default {
     "./components/**/*.{js,jsx,ts,tsx}"
   ],
   theme: {
-    extend: {},
+    extend: {
+      keyframes: {
+        float: {
+          '0%, 100%': { transform: 'translate(0px, -3px)' },
+          '50%': { transform: 'translate(2px, 3px)' },
+        }
+      },
+      animation: {
+        float: 'float 2s ease-in-out infinite',
+      }
+    },
   },
   plugins: [],
 }
