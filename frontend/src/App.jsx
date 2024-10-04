@@ -25,7 +25,7 @@ function App() {
           <button className='px-4 py-2 h-fit border border-white text-white rounded-3xl mx-2 text-base font-medium'>Contact Sales</button>
         </div>
         <div className='mt-10 relative'>
-          <img className='h-80 mx-auto' src="/public/laptop.png" alt="" />
+          <img className='h-80 mx-auto' src="/laptop.png" alt="" />
           <div className='bg-black w-[29vw] h-[270px] absolute left-[35vw] mx-auto top-5' />
         </div>
       </div>
@@ -167,14 +167,7 @@ function App() {
         <div className='mt-12 w-9/12 bg-[#024643] h-80 rounded-3xl mx-auto flex flex-col justify-center'>
           <h1 className='text-3xl font-bold text-[#FAFAFA] text-center'>Get Started With AutoDocs Right Away!</h1>
           <p className='text-lg mt-2 text-[#547B79] text-center'>Simplify, Automate, and Elevate Your Workflow<br />AutoDocs Is Your Companion in Turning Documentation from a Chore Into a Breeze</p>
-          <div className='px-4 py-2 mt-4 w-fit text-base mx-auto rounded-3xl text-[#FAFAFA] bg-[#714DFF]'>
-            <SignedOut>
-              <SignInButton />
-            </SignedOut>
-            <SignedIn>
-              <UserButton />
-            </SignedIn>
-          </div>
+          <button className='px-4 py-2 mt-4 w-fit text-base mx-auto rounded-3xl text-[#FAFAFA] bg-[#714DFF]'>Start Free Trial</button>
         </div>
       </div>
     </div>

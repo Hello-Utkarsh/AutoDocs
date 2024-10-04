@@ -75,7 +75,7 @@ const Editor = () => {
     }
 
     return (
-        <div className='w-[70%] bg-[#E5E5CB] border-4 border-[#E5E5CB] rounded-xl text-center overflow-y-scroll overflow-x-hidden'>
+        <div className='w-full bg-[#E1F7DD] text-center overflow-y-auto px-2 py-2'>
             {markdown && <MDXEditor key={key} onChange={(e) => { if (e !== "") { setMarkdown(e) } }} markdown={markdown} contentEditableClassName="prose" plugins={[headingsPlugin(), listsPlugin(),
             codeBlockPlugin({ defaultCodeBlockLanguage: 'js' }),
             codeMirrorPlugin({ codeBlockLanguages: { js: 'JavaScript', css: 'CSS' } }),
@@ -85,13 +85,13 @@ const Editor = () => {
                         {' '}
                         <div className='w-full bg-[#1A120B] flex h-9 items-center'>
                             <UndoRedo />
-                            <span className='h-[35px] -mt-1 w-[1px] bg-[#D5CEA3]' />
+                            <span className='h-[35px] -mt-1 w-[1px]' />
                             <BlockTypeSelect />
-                            <span className='h-[35px] -mt-1 w-[1px] bg-[#D5CEA3]' />
+                            <span className='h-[35px] -mt-1 w-[1px]' />
                             <BoldItalicUnderlineToggles />
-                            <span className='h-8 -mt-1 w-[1px] bg-[#D5CEA3]' />
+                            <span className='h-8 -mt-1 w-[1px]' />
                             <ListsToggle />
-                            <span className='h-8 -mt-1 w-[1px] bg-[#D5CEA3]' />
+                            <span className='h-8 -mt-1 w-[1px]' />
                             <ConditionalContents
                                 options={[
                                     {
@@ -101,8 +101,8 @@ const Editor = () => {
                                     }
                                 ]}
                             />
-                            <input id='doc_name' placeholder='Name of doc' className='bg-[#fff] w-32 text-[#3C2A21] rounded-lg h-7 mr-2 px-2'></input>
-                            <Button onClick={save_docs}>Save</Button>
+                            <input id='doc_name' placeholder='Name of doc' className='bg-[#FAFAFA] w-32 text-[#191818] rounded-lg h-7 mr-2 px-2'></input>
+                            <Button className='hover:bg-[#714DFF] text-[#FAFAFA]' onClick={save_docs}>Save</Button>
                             <Button>Publish</Button>
                         </div>
                     </>

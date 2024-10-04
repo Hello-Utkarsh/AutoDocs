@@ -1,6 +1,5 @@
 #root {
   text-align: center;
-  color: #1A120B;
   /* height: 100vh; */
 }
 
@@ -46,29 +45,28 @@
   margin: 0 !important;
   display: flex;
   align-items: center;
-  background-color: #1A120B;
 }
 
 .mdxeditor-toolbar > div {
-  color: #E5E5CB;
-  background-color: #1A120B;
+  color: #191818;
+  background-color: #E1F7DD;
 }
 
 .mdxeditor-toolbar > div > div {
   display: flex;
-  color: #E5E5CB;
+  color: #191818;
   margin-left: 8px;
   margin-right: 8px;
 }
 
 .mdxeditor-diff-source-wrapper > p {
   text-align: start;
-  color: #1a120b;
+  color: #191818;
 }
 
 ._contentEditable_yms4a_379 {
   text-align: start;
-  color: #1a120b;
+  color: #191818;
   padding-left: 5px;
   padding-right: 5px;
 }
@@ -76,13 +74,13 @@
 ._contentEditable_yms4a_379 > ol {
   text-align: start;
   list-style-type: decimal;
-  color: #1a120b;
+  color: #191818;
   padding-left: 10px;
 }
 
 ._contentEditable_yms4a_379 > ul {
   text-align: start;
-  color: #1a120b;
+  color: #191818;
   padding-left: 15px;
 }
 
@@ -90,26 +88,39 @@
   list-style-type: disc;
 }
 
-.mdxeditor-toolbar > div > div > div > button > span > svg {
-  color: #E5E5CB;
-}
-
 .mdxeditor-toolbar > div > div > button > span > svg {
-  color: #E5E5CB;
+  color: #191818;
+  border-radius: 5px;
 }
 
-.mdxeditor-toolbar > div > div > div > button > span :hover {
-  background-color: #1A120B !important;
+.mdxeditor-toolbar > div > div > button > span :hover {
+  background-color: #024643 !important;
+  color: #FAFAFA;
+  border-radius: 5px;
+}
+
+/* .mdxeditor-toolbar > div > div > div > button {
+  background-color: #024643 !important;
+  color: #FAFAFA;
+  border-radius: 5px;
+} */
+
+.mdxeditor-toolbar > div > div > div > button:hover {
+  background-color: #024643 !important;
+  color: #FAFAFA;
 }
 
 .mdxeditor-toolbar > div > div > button {
   margin-top: 2px !important;
   height: 30px !important;
+  color: #FAFAFA;
 }
 
 .mdxeditor-toolbar > div > div > button:hover {
-  background-color: #1A120B !important;
-  outline: #E5E5CB solid 2px;
+  background-color: #024643 !important;
+  color: #FAFAFA !important;
+  border-radius: 5px;
+  /* outline: #E5E5CB solid 2px; */
 }
 
 .mdxeditor-toolbar > div > button {
@@ -117,25 +128,25 @@
   height: 30px;
 }
 
-.mdxeditor-toolbar > div > button:hover {
-  background-color: #1A120B !important;
-  outline: #E5E5CB solid 2px;
-}
+/* .mdxeditor-toolbar > div > button {
+  padding: 0 6px;
+  background-color: #714DFF !important;
+  color: #FAFAFA;
+} */
+
+/* .mdxeditor-toolbar > div > button:hover {
+  background-color: #714dffd5 !important;
+} */
 
 ._toolbarToggleItem_yms4a_206[data-state=on] {
-  outline: #E5E5CB solid 1px;
-  background-color: #1A120B !important;
+  background-color: #024643 !important;
+  color: #FAFAFA !important;
 }
 
 ._codeMirrorWrapper_yms4a_391 {
-  background-color: white;
+  background-color: black;
 }
 
-.chat-mdx ._contentEditable_yms4a_379 > * {
+/* .chat-mdx ._contentEditable_yms4a_379 > * {
   color: #E5E5CB;
-}
-
-.chat-mdx ._code_1tncs_52 {
-  background-color: #3C2A21 !important;
-  color: #E5E5CB !important;
-}
+} */

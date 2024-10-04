@@ -110,14 +110,14 @@ const ChatBot = () => {
   }
 
   return (
-    <div className='w-[29%] bg-[#E5E5CB] rounded-l-xl flex relative py-3'>
+    <div className='w-[30%] bg-[#E1F7DD] rounded-l-xl flex relative py-3'>
       <div className='absolute bottom-2 w-full rounded-md bg-[#3C2A21] flex justify-between items-center pr-2 py-1'>
         <input onChange={(e) => setPropmt(e.target.value)} className='chat-input h-8 px-1 bg-[#3C2A21] rounded-lg text-[#D5CEA3] w-72 text-sm' type="text" />
         <span onClick={Chat} class="material-symbols-outlined cursor-pointer bg-[#E5E5CB] rounded-full px-1 py-1">
           arrow_upward
         </span>
       </div>
-      <div className='flex flex-col px-5 w-full max-h-[27.5rem] overflow-y-scroll'>
+      <div className='flex flex-col px-5 w-full max-h-[27.5rem] overflow-y-auto'>
         {chat.length > 0 ? chat.map(text => {
           // console.log(text)
           return <div className='flex flex-col w-[100%] text-[#D5CEA3] relative'>

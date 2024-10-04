@@ -29,9 +29,9 @@ ReactDOM.createRoot(document.getElementById('root')).render(
           <Routes>
             <Route path='/' element={<Navbar />}>
               <Route path="/" element={<App />} />
-              <Route path="/main" element={<SideBar />}>
-                <Route index element={<Dashboards />} />
-              </Route>
+            </Route>
+            <Route path="/main" element={<SideBar />}>
+              <Route index element={<Dashboards />} />
             </Route>
           </Routes>
         </BrowserRouter>
