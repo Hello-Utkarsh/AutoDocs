@@ -11,7 +11,7 @@ function App() {
 
   useEffect(() => {
     if (user.isSignedIn) {
-      navigate('/main')
+      // navigate('/main')
     }
   })
 
@@ -24,9 +24,9 @@ function App() {
           <button className='px-4 py-2 h-fit bg-[#714DFF] rounded-3xl mx-2 text-[#FAFAFA] text-base font-medium'>Start Free Trial</button>
           <button className='px-4 py-2 h-fit border border-white text-white rounded-3xl mx-2 text-base font-medium'>Contact Sales</button>
         </div>
-        <div className='mt-10 relative'>
+        <div className='mt-10 relative flex justify-center items-center'>
           <img className='h-80 mx-auto' src="/laptop.png" alt="" />
-          <div className='bg-black w-[29vw] h-[270px] absolute left-[35vw] mx-auto top-5' />
+          <img className='bg-black w-[425px] h-[280px] rounded-lg absolute mx-auto top-[9px]' src='/demo.png'/>
         </div>
       </div>
 
@@ -38,7 +38,7 @@ function App() {
           <div className=' text-black w-96 rounded-2xl px-6 py-6 mx-4 border border-gray-200 hover:bg-white transition duration-300'>
             <div className='relative'>
               <div className='h-12 w-12 rounded-full bg-[#024643] z-0' />
-              <img className='h-8 absolute top-2 left-4 z-10' src="/notes.png" alt="" />
+              <img className='h-8 absolute top-2 left-3 z-10' src="/notes.png" alt="" />
             </div>
             <h4 className='font-medium text-lg tracking-tight mt-2'>Streamline Your Note-Taking</h4>
             <p className='text-base'>Our note-taking app offers a range of features to help you stay organized and productive.</p>
@@ -48,7 +48,7 @@ function App() {
           <div className=' text-black w-96 rounded-2xl px-6 py-6 mx-4 border border-gray-200 hover:bg-white transition duration-300'>
             <div className='relative'>
               <div className='h-12 w-12 rounded-full bg-[#024643] z-0' />
-              <img className='h-8 absolute top-2 left-3 z-10' src="/innovation.png" alt="" />
+              <img className='h-8 absolute top-2 left-2 z-10' src="/innovation.png" alt="" />
             </div>
             <h4 className='font-medium text-lg tracking-tight mt-2'>AI Support</h4>
             <p className='text-base'>Gemini is always ready to assist you, ensuring that you have the support you need, whenever you need it.</p>
@@ -58,7 +58,7 @@ function App() {
           <div className=' text-black w-96 rounded-2xl px-6 py-6 mx-4 border border-gray-200 hover:bg-white transition duration-300'>
             <div className='relative'>
               <div className='h-12 w-12 rounded-full bg-[#024643] z-0' />
-              <img className='h-10 absolute top-1 left-4 z-10 bg-[#FAFAFA]' src="/bot_15883207.png" alt="" />
+              <img className='h-8 absolute top-2 left-2 z-10' src="/code.png" alt="" />
             </div>
             <h4 className='font-medium text-lg tracking-tight mt-2'>Markdown Support</h4>
             <p className='text-base'>Format your notes with Markdown for a clean, organized look.</p>
@@ -68,8 +68,8 @@ function App() {
         <div className='mt-20 relative h-80'>
           <img className='w-full h-96 absolute object-cover opacity-20' src="/background.jpg" alt="" />
           <div className='w-[50%] left-[25%] top-[30%] absolute'>
-            <h1 className='text-4xl font-extrabold text-center'>Post to your Favorite platform<br />in just one click</h1>
-            <p className='text-lg mt-6 text-center text-pretty px-4'>Connect your AutoDocs account to Hashnode, Medium, X or Dev.to<br />and post all your blogs in just one click</p>
+            <h1 className='text-4xl font-extrabold text-center text-[#191818]'>Post to your Favorite platform<br />in just one click</h1>
+            <p className='text-lg mt-6 text-center text-pretty px-4 text-[#191818]'>Connect your AutoDocs account to Hashnode, Medium, X or Dev.to<br />and post all your blogs in just one click</p>
           </div>
           <img className='h-10 left-[28%] absolute animate-float' src="/hashnode.png" alt="" />
           <img className='h-10 left-[16%] top-[64%] absolute animate-float' src="/dev-to.svg" alt="" />
@@ -82,7 +82,7 @@ function App() {
         <p className='text-center text-lg mt-2'>Our plans are designed to be affordable, flexible and tailored to your unique needs.</p>
         <div className='flex justify-center mt-8'>
           <button className='px-4 py-2 h-fit bg-[#714DFF] rounded-3xl mx-2 text-[#FAFAFA] text-base font-medium'>Monthly</button>
-          <button className='px-4 py-2 h-fit bg-[#FAFAFA] rounded-3xl mx-2 border border-black text-base font-medium'>Yearly</button>
+          <button className='px-4 py-2 h-fit bg-[#FAFAFA] text-[#191818] rounded-3xl mx-2 border border-black text-base font-medium'>Yearly</button>
         </div>
         <div className='flex-col mt-16'>
           <div className='flex justify-between w-[65%] mx-auto'>
@@ -90,18 +90,11 @@ function App() {
               <h2 className='text-3xl font-bold text-black'>Have<br />Question?</h2>
               <button className='text-base font-bold text-[#714DFf] mt-3'>Contact Us, Now &#x2192;</button>
             </div>
-            <div className='flex justify-between w-4/6'>
+            <div className='flex justify-between w-4/6 text-[#191818]'>
               <div className='flex-col items-start justify-start w-[15vw]'>
                 <h2 className='text-base font-bold w-fit'>Starter</h2>
                 <p className='text-base mt-4 w-fit'><span className='text-4xl font-bold'>$0</span>/Month</p>
-                <div className='py-2 rounded-3xl w-3/5 text-center text-base border-2 border-black text-black mt-4'>
-                  <SignedOut>
-                    <SignInButton />
-                  </SignedOut>
-                  <SignedIn>
-                    <UserButton />
-                  </SignedIn>
-                </div>
+                  <button className='py-2 rounded-3xl w-4/6 text-center text-base border-2 border-black text-black mt-4'>Start Free Trial</button>
               </div>
               <div className='flex-col items-start justify-start w-[15vw]'>
                 <h2 className='text-base font-bold'>Starter</h2>
@@ -117,13 +110,13 @@ function App() {
           </div>
           <div className='flex w-[65%] mx-auto bg-[#E1F7DD] rounded-[48px] mt-8 px-8 py-3'>
             <div className='flex flex-col divide-y-2 divide-slate-300 h-full w-1/4'>
-              <p className='py-4 text-lg'>Feature</p>
-              <p className='py-4 text-lg'>Feature</p>
-              <p className='py-4 text-lg'>Feature</p>
-              <p className='py-4 text-lg'>Feature</p>
-              <p className='py-4 text-lg'>Feature</p>
-              <p className='py-4 text-lg'>Feature</p>
-              <p className='py-4 text-lg'>Feature</p>
+              <p className='py-4 text-[#191818] text-lg'>Feature</p>
+              <p className='py-4 text-[#191818] text-lg'>Feature</p>
+              <p className='py-4 text-[#191818] text-lg'>Feature</p>
+              <p className='py-4 text-[#191818] text-lg'>Feature</p>
+              <p className='py-4 text-[#191818] text-lg'>Feature</p>
+              <p className='py-4 text-[#191818] text-lg'>Feature</p>
+              <p className='py-4 text-[#191818] text-lg'>Feature</p>
             </div>
             <div className='flex flex-col divide-y-2 divide-slate-300 bg-[#FAFAFA] rounded-3xl h-full w-3/4'>
               <div className='flex w-full justify-around items-center py-5'>

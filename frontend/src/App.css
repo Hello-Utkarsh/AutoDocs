@@ -95,15 +95,9 @@
 
 .mdxeditor-toolbar > div > div > button > span :hover {
   background-color: #024643 !important;
-  color: #FAFAFA;
+  color: #FAFAFA !important;
   border-radius: 5px;
 }
-
-/* .mdxeditor-toolbar > div > div > div > button {
-  background-color: #024643 !important;
-  color: #FAFAFA;
-  border-radius: 5px;
-} */
 
 .mdxeditor-toolbar > div > div > div > button:hover {
   background-color: #024643 !important;
@@ -128,23 +122,25 @@
   height: 30px;
 }
 
-/* .mdxeditor-toolbar > div > button {
+.mdxeditor-toolbar > div > button {
   padding: 0 6px;
   background-color: #714DFF !important;
   color: #FAFAFA;
-} */
+}
 
-/* .mdxeditor-toolbar > div > button:hover {
+.mdxeditor-toolbar > div > button:hover {
   background-color: #714dffd5 !important;
-} */
+}
 
-._toolbarToggleItem_yms4a_206[data-state=on] {
+._toolbarToggleItem_yms4a_206[data-state='on'] svg,
+._toolbarToggleItem_yms4a_206[data-state='on'],
+._toolbarToggleItem_yms4a_206:hover svg{
   background-color: #024643 !important;
   color: #FAFAFA !important;
 }
 
 ._codeMirrorWrapper_yms4a_391 {
-  background-color: black;
+  background-color: 024643;
 }
 
 /* .chat-mdx ._contentEditable_yms4a_379 > * {

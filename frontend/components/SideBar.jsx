@@ -60,19 +60,19 @@ const SideBar = () => {
         <button onClick={() => setDialog(true)} className='text-white mx-auto py-1 w-3/4 text-lg rounded-md bg-[#714DFF] hover:bg-[#714dffd5]'>New Table</button>
 
         {dialog_state ? <dialog open className='bg-[#D5CEA3] rounded-2xl z-10'>
-          <div className='h-64 w-72 z-10 rounded-2xl fixed flex flex-col top-[30%] left-[35%] bg-[#D5CEA3] text-[#3C2A21] items-center justify-center py-6 px-6'>
+          <div className='h-56 w-56 z-10 rounded-2xl fixed flex flex-col top-[30%] left-[35%] bg-[#024643] text-[#E1F7DD] items-center justify-center py-6 px-6'>
             <span onClick={() => setDialog(false)} className="material-symbols-outlined cursor-pointer absolute top-4 right-5">
               close
             </span>
             <div className='my-2 w-4/6 flex flex-col'>
               <label htmlFor="">Name</label>
-              <input type="text" placeholder='Docker Docs' onChange={(n) => setNewTable(n.target.value)} className='w-full px-2 bg-[#E5E5CB] rounded-md' />
+              <input type="text" placeholder='Docker Docs' onChange={(n) => setNewTable(n.target.value)} className='w-full px-2 bg-[#E1F7DD] text-[#191818] rounded-md' />
             </div>
             <div className='my-2 w-4/6 flex flex-col'>
               <label htmlFor="">Content Type</label>
-              <input type="text" placeholder='notes or docs' onChange={(c) => setNewContent(c.target.value)} className='w-full px-2 bg-[#E5E5CB] rounded-md' />
+              <input type="text" placeholder='notes or docs' onChange={(c) => setNewContent(c.target.value)} className='w-full px-2 bg-[#E1F7DD] text-[#191818] rounded-md' />
             </div>
-            <button onClick={() => createTable(new_table_name, new_table_content, user.user.id, setDialog, set_table_changed)} className='bg-[#3C2A21] text-[#E5E5CB] w-fit px-3 py-1 rounded-lg mx-auto my-4'>Create</button>
+            <button onClick={() => createTable(new_table_name, new_table_content, user.user.id, setDialog, set_table_changed)} className='bg-[#714DFF] text-[#FAFAFA] hover:bg-[#714dffd5] w-fit px-3 py-1 rounded-lg mx-auto my-4'>Create</button>
           </div>
         </dialog> : null}
 

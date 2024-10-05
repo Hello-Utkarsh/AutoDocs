@@ -75,7 +75,7 @@ const Editor = () => {
     }
 
     return (
-        <div className='w-full bg-[#E1F7DD] text-center overflow-y-auto px-2 py-2'>
+        <div className='w-full bg-[#E1F7DD] text-center overflow-y-auto py-2'>
             {markdown && <MDXEditor key={key} onChange={(e) => { if (e !== "") { setMarkdown(e) } }} markdown={markdown} contentEditableClassName="prose" plugins={[headingsPlugin(), listsPlugin(),
             codeBlockPlugin({ defaultCodeBlockLanguage: 'js' }),
             codeMirrorPlugin({ codeBlockLanguages: { js: 'JavaScript', css: 'CSS' } }),
@@ -83,7 +83,7 @@ const Editor = () => {
                 toolbarContents: () => (
                     <>
                         {' '}
-                        <div className='w-full bg-[#1A120B] flex h-9 items-center'>
+                        <div className='w-full flex items-center pb-2 border-b-2 border-[#547B79]'>
                             <UndoRedo />
                             <span className='h-[35px] -mt-1 w-[1px]' />
                             <BlockTypeSelect />

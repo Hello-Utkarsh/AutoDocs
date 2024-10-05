@@ -110,22 +110,22 @@ const ChatBot = () => {
   }
 
   return (
-    <div className='w-[30%] bg-[#E1F7DD] rounded-l-xl flex relative py-3'>
-      <div className='absolute bottom-2 w-full rounded-md bg-[#3C2A21] flex justify-between items-center pr-2 py-1'>
-        <input onChange={(e) => setPropmt(e.target.value)} className='chat-input h-8 px-1 bg-[#3C2A21] rounded-lg text-[#D5CEA3] w-72 text-sm' type="text" />
-        <span onClick={Chat} class="material-symbols-outlined cursor-pointer bg-[#E5E5CB] rounded-full px-1 py-1">
+    <div className='w-full h-full bg-transparent rounded-l-xl flex relative'>
+      <div className='absolute bottom-0 w-full rounded-md bg-[#024643] flex justify-between items-center pr-2 py-1'>
+        <input onChange={(e) => setPropmt(e.target.value)} className='chat-input h-8 px-1 bg-[#547B79] rounded-lg text-[#E1F7DD] w-full mx-1 text-sm' type="text" />
+        <span onClick={Chat} class="material-symbols-outlined text-[#024643] cursor-pointer bg-[#E1F7DD] rounded-full px-1 py-1">
           arrow_upward
         </span>
       </div>
-      <div className='flex flex-col px-5 w-full max-h-[27.5rem] overflow-y-auto'>
+      <div className='flex flex-col px-3 w-full max-h-[27.5rem] overflow-y-auto'>
         {chat.length > 0 ? chat.map(text => {
           // console.log(text)
-          return <div className='flex flex-col w-[100%] text-[#D5CEA3] relative'>
-            <p className='text-left w-fit py-1 px-3 my-2 text-sm rounded-xl bg-[#3C2A21]'>{text[0]}</p>
-            <MDXEditor readOnly className='chat-mdx text-left w-fit my-2 text-sm rounded-xl bg-[#3C2A21] text-[#D5CEA3]' markdown={text[1]} plugins={[headingsPlugin(), listsPlugin(), linkPlugin(), codeBlockPlugin({ defaultCodeBlockLanguage: 'js' }),
+          return <div className='flex flex-col w-[100%] text-[#E1F7DD] relative'>
+            <p className='text-left w-fit py-1 px-3 my-2 text-sm rounded-xl bg-[#024643]'>{text[0]}</p>
+            <MDXEditor readOnly className='chat-mdx text-left w-fit my-2 text-sm rounded-xl bg-[#3C2A21] text-[#E1F7DD]' markdown={text[1]} plugins={[headingsPlugin(), listsPlugin(), linkPlugin(), codeBlockPlugin({ defaultCodeBlockLanguage: 'js' }),
             codeMirrorPlugin({ codeBlockLanguages: { js: 'JavaScript', css: 'CSS' } }),]} />
           </div>
-        }) : <p className='text-left w-fit py-1 px-3 my-2 text-sm rounded-xl text-[#D5CEA3] bg-[#3C2A21]'>Hello, how can i help you</p>}
+        }) : <p className='text-left w-fit py-1 px-3 my-2 text-sm rounded-xl text-[#E1F7DD] bg-[#024643]'>Hello, how can i help you</p>}
       </div>
     </div>
   )
