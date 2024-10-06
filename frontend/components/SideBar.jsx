@@ -20,7 +20,7 @@ const SideBar = () => {
 
   useEffect(() => {
     if (!user.isSignedIn) {
-      // navigate('/')
+      navigate('/')
     }
     user_data(user).then(data => {
       if (data) {

@@ -11,7 +11,7 @@ function App() {
 
   useEffect(() => {
     if (user.isSignedIn) {
-      // navigate('/main')
+      navigate('/main')
     }
   })
 

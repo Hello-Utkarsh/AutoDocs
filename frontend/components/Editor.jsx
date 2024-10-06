@@ -6,6 +6,9 @@ import { note_id, doc_created, table_id } from '../states/state'
 import { useUser } from '@clerk/clerk-react'
 
 const Editor = () => {
+    const [publish, setPublish] = useState(false)
+    const [select, setSelect] = useState("medium")
+    const underline = {"medium": ["w-20 left-[22px]", "go to medium.com > setting > Security and apps > Integration token"], "dev-to": ["w-8 left-[124px]"], "hashnode": ["w-8 left-[188px] mt-1"], "x": ["w-10 left-[248px] mt-1"] }
 
     const [tableId, setTableId] = useRecoilState(table_id)
     const set_created_doc = useSetRecoilState(doc_created)
@@ -103,12 +106,31 @@ const Editor = () => {
                             />
                             <input id='doc_name' placeholder='Name of doc' className='bg-[#FAFAFA] w-32 text-[#191818] rounded-lg h-7 mr-2 px-2'></input>
                             <Button className='hover:bg-[#714DFF] text-[#FAFAFA]' onClick={save_docs}>Save</Button>
-                            <Button>Publish</Button>
+                            <Button onClick={() => setPublish(e => !e)}>Publish</Button>
                         </div>
                     </>
                 )
             })]} />}
-
+            <div className={`h-${publish ? "[340px]" : "0"} transition-all duration-500 bg-transparent w-80 ${publish ? "border-2" : ""} border-[#191818] rounded-md absolute left-[49rem] top-14 overflow-hidden`}>
+                <h1 className='text-xl font-bold text-[#024643] text-start mt-2 mx-4'>Choose Your Platform</h1>
+                <div className='flex justify-around px-4 mt-3'>
+                    <button onClick={() => setSelect("medium")}><img className='h-7 w-20 object-cover object-right' src="/medium.png" alt="" /></button>
+                    <button onClick={() => setSelect("dev-to")}><img className='h-7 mx-3' src="/dev-to.svg" alt="" /></button>
+                    <button onClick={() => setSelect("hashnode")}><img className='h-7 mx-3' src="/hashnode.png" alt="" /></button>
+                    <button onClick={() => setSelect("x")} value={"x"}><img className='h-7 mx-3' src="/x.png" alt="" /></button>
+                </div>
+                <div className={`${underline[select][0]} bg-[#024643] h-1 rounded-md absolute transition-all duration-200`} />
+                <div className='flex flex-col mx-2 my-2 mt-4'>
+                    <label htmlFor="" className='text-start my-1 text-[#024643] text-sm font-medium'>Auth-Token</label>
+                    <input type="text" className='bg-[#547B79] rounded-md px-2 py-1' />
+                    <p className='text-[#547B79] text-start mt-4 text-sm font-medium leading-4'>Note: To generate a auth-token {underline[select][1]}</p>
+                    <p className='text-[#547B79] text-start my-2 text-sm font-medium leading-4'>Note: We wont be getting access to any of your password and youll be able to delete the auth-token whenever you want</p>
+                </div>
+                <div className='flex justify-between px-4'>
+                <button className='bg-[#714DFF] hover:bg-[#714dffd5] px-3 py-1 rounded-md text-[#FAFAFA]' onClick={() => {console.log("object")}}>Save</button>
+                <button className='bg-black hover:bg-gray-700 px-3 py-1 rounded-md text-[#FAFAFA]' onClick={() => setPublish(false)}>Close</button>
+                </div>
+            </div>
         </div>
     )
 }
