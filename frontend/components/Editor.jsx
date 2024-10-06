@@ -111,7 +111,7 @@ const Editor = () => {
                     </>
                 )
             })]} />}
-            <div className={`h-${publish ? "[340px]" : "0"} transition-all duration-500 bg-transparent w-80 ${publish ? "border-2" : ""} border-[#191818] rounded-md absolute left-[49rem] top-14 overflow-hidden`}>
+            <div className={`h-${publish ? "[340px]" : "0"} transition-all duration-500 bg-transparent w-80 ${publish ? "border-2" : ""} border-[#191818] rounded-md absolute left-[49rem] top-14 overflow-hidden`} style={{height: publish ? "340px" : "0"}}>
                 <h1 className='text-xl font-bold text-[#024643] text-start mt-2 mx-4'>Choose Your Platform</h1>
                 <div className='flex justify-around px-4 mt-3'>
                     <button onClick={() => setSelect("medium")}><img className='h-7 w-20 object-cover object-right' src="/medium.png" alt="" /></button>
