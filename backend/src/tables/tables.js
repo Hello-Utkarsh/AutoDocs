@@ -11,8 +11,8 @@ const tableCheck = z.object({
 
 // create tables
 router.post('/create', async (req, res) => {
-    const { name, content, user_id } = await req.body
-    const parsedData = await tableCheck.safeParseAsync({ name, content, user_id })
+    const { name, user_id } = await req.body
+    const parsedData = await tableCheck.safeParseAsync({ name, user_id })
     if (!parsedData.success) {
         return res.send({ message: "Invalid Data" }).status(404)
     }
@@ -25,7 +25,6 @@ router.post('/create', async (req, res) => {
     await prisma.tables.create({
         data: {
             name: name,
-            content: content,
             user_id: user_id
         }
     })

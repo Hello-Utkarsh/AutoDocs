@@ -3,6 +3,7 @@ const table = require('./tables/tables')
 const docs = require('./docs/docs')
 const parser = require('body-parser')
 const cors = require('cors')
+const user = require('./user')
 const app = express()
 const port = 3000
 
@@ -14,6 +15,7 @@ app.get('/', (req, res) => {
 
 app.use('/table', table)
 app.use('/docs', docs)
+app.use('/user', user)
 
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`)

@@ -15,6 +15,7 @@ const SideBar = () => {
   const [new_table_name, setNewTable] = useState("")
   const [new_table_content, setNewContent] = useState("")
   const [dialog_state, setDialog] = useState()
+  const [err, setErr] = useState("")
   const user = useUser()
   const navigate = useNavigate()
 
@@ -57,24 +58,19 @@ const SideBar = () => {
           })}
         </div>
 
-        <button onClick={() => setDialog(true)} className='text-white mx-auto py-1 w-3/4 text-lg rounded-md bg-[#714DFF] hover:bg-[#714dffd5]'>New Table</button>
-
-        {dialog_state ? <dialog open className='bg-[#D5CEA3] rounded-2xl z-10'>
-          <div className='h-56 w-56 z-10 rounded-2xl fixed flex flex-col top-[30%] left-[35%] bg-[#024643] text-[#E1F7DD] items-center justify-center py-6 px-6'>
-            <span onClick={() => setDialog(false)} className="material-symbols-outlined cursor-pointer absolute top-4 right-5">
-              close
-            </span>
-            <div className='my-2 w-4/6 flex flex-col'>
-              <label htmlFor="">Name</label>
-              <input type="text" placeholder='Docker Docs' onChange={(n) => setNewTable(n.target.value)} className='w-full px-2 bg-[#E1F7DD] text-[#191818] rounded-md' />
+        <div className='relative justify-center flex w-full'>
+          <button onClick={() => setDialog(true)} className='text-white mx-auto py-1 w-3/4 text-lg rounded-md bg-[#714DFF] hover:bg-[#714dffd5] transition-all duration-300' style={{ opacity: !dialog_state ? "1" : "0", zIndex: !dialog_state ? "10" : "0" }}>{err ? err : 'New Table'}</button>
+          <div className='flex flex-col absolute top-0 w-56 transition-all duration-300 bg-[#714DFF] rounded-md py-2 px-1 justify-between' style={{ opacity: dialog_state ? "1" : "0", zIndex: dialog_state ? "10" : "0" }}>
+            <input type="text" placeholder='Table Name...' onChange={(n) => setNewTable(n.target.value)} className='bg-white rounded-md px-1 text-black' />
+            <div className='flex justify-end mt-2'>
+              <button onClick={() => {
+                setDialog(false)
+                createTable(new_table_name, user.user.id, setDialog, set_table_changed, setErr)
+              }} className='rounded-md px-2 py-1 mx-1 bg-[#E1F7DD] text-black text-sm font-medium'>Create</button>
+              <button onClick={() => { setDialog(false) }} className='rounded-md px-2 py-1 mx-1 bg-black text-sm font-medium'>Close</button>
             </div>
-            <div className='my-2 w-4/6 flex flex-col'>
-              <label htmlFor="">Content Type</label>
-              <input type="text" placeholder='notes or docs' onChange={(c) => setNewContent(c.target.value)} className='w-full px-2 bg-[#E1F7DD] text-[#191818] rounded-md' />
-            </div>
-            <button onClick={() => createTable(new_table_name, new_table_content, user.user.id, setDialog, set_table_changed)} className='bg-[#714DFF] text-[#FAFAFA] hover:bg-[#714dffd5] w-fit px-3 py-1 rounded-lg mx-auto my-4'>Create</button>
           </div>
-        </dialog> : null}
+        </div>
 
       </div>
       <Outlet />

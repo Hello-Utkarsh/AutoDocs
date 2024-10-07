@@ -1,32 +1,43 @@
 
 export const handleDel = async (t, table, setTable) => {
-    const req = await fetch(`${import.meta.env.VITE_PORT}/table/delete`, {
-        method: 'DELETE',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({ table_id: t[Object.keys(t)][0].table_id })
-    })
-    const response = await req.json()
-
-    setTable(table.filter(tab => tab[Object.keys(tab)][0].table_id !== t[Object.keys(t)][0].table_id))
+    try {
+        const req = await fetch(`${import.meta.env.VITE_PORT}/table/delete`, {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ table_id: t[Object.keys(t)][0].table_id })
+        })
+        const response = await req.json()
+        if (response) {
+            setTable(table.filter(tab => tab[Object.keys(tab)][0].table_id !== t[Object.keys(t)][0].table_id))
+        }
+    } catch (error) {
+        console.log(error.message)
+    }
 }
 
-export const createTable = async (name, content, id, setDialog, set_table_changed) => {
-    const req = await fetch(`${import.meta.env.VITE_PORT}/table/create`, {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-            name: name,
-            content: content,
-            user_id: id
+export const createTable = async (name, id, setDialog, set_table_changed, setErr) => {
+    try {
+        const req = await fetch(`${import.meta.env.VITE_PORT}/table/create`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                name: name,
+                user_id: id
+            })
         })
-    })
-    const response = await req.json()
-    setDialog(false)
-    set_table_changed(p => !p)
+        const response = await req.json()
+        setDialog(false)
+        set_table_changed(p => !p)
+    } catch (error) {
+        setErr("Some error occured, Please try again")
+        setTimeout(() => {
+            setErr("")
+        }, 4000)
+    }
 }
 
 export const user_data = async (u) => {

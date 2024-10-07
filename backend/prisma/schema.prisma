@@ -14,15 +14,10 @@ datasource db {
   directUrl = env("DIRECT_URL")
 }
 
-model notes {
-  id         Int      @id @default(autoincrement())
-  name       String
-  content    String   @db.VarChar(280)
-  user_id    String
-  publish    Boolean
-  created_at DateTime @default(now())
-  table_id   Int
-  tables     tables   @relation(fields: [table_id], references: [id])
+model user{
+  id String @id
+  name String
+  tokens Json
 }
 
 model docs {
@@ -40,12 +35,5 @@ model tables {
   id      Int     @id @default(autoincrement())
   user_id String
   name    String
-  content Type
-  notes   notes[]
   docs    docs[]
-}
-
-enum Type {
-  docs
-  notes
 }
