@@ -8,8 +8,11 @@ import { SignedIn, UserButton, useUser } from '@clerk/clerk-react'
 const Editor = () => {
     const [publish, setPublish] = useState(false)
     const [select, setSelect] = useState("medium")
+    const [title, setTitle] = useState('')
+    const [tags, setTags] = useState({ medium: "" })
     const [token, setToken] = useState({ medium: "", hashnode: "", 'dev-to': "", x: "" })
     const underline = { "medium": ["w-20 left-[22px]", "go to medium.com > setting > Security and apps > Integration token"], "dev-to": ["w-8 left-[124px]"], "hashnode": ["w-8 left-[188px] mt-1"], "x": ["w-10 left-[248px] mt-1"] }
+    const [saveLoading, setSaveLoading] = useState(false)
 
     const [tableId, setTableId] = useRecoilState(table_id)
     const set_created_doc = useSetRecoilState(doc_created)
@@ -48,6 +51,7 @@ const Editor = () => {
         if (select_note_id || tableId) {
             note_content()
         }
+        getToken()
     }, [select_note_id, tableId])
 
     const save_docs = async () => {
@@ -78,8 +82,81 @@ const Editor = () => {
         }
     }
 
+    const getToken = async () => {
+        try {
+            const req = await fetch(`${import.meta.env.VITE_PORT}/user/get-token`, {
+                method: "GET",
+                headers: {
+                    'Content-Type': 'application/json',
+                    "id": user.user.id
+                }
+            })
+            const res = await req.json()
+            if (req.status == 200) {
+                setToken(res.token.tokens)
+            }
+        } catch (error) {
+            console.log(error.message)
+        }
+    }
+
+    const postBlog = async () => {
+        if (token['dev-to'] == "" && token.hashnode == "" && token.medium == "" && token.x == "") {
+            alert("please enter a auth-token for any of the platform mentioned")
+            return
+        }
+        try {
+            const userDetailsReq = await fetch(`${import.meta.env.VITE_PORT}/user/medium-user-data`, {
+                method: "GET",
+                headers: {
+                    "token": `${token.medium}`,
+                }
+            })
+            const userDetailsRes = await userDetailsReq.json()
+            if (markdown == "" || title == "") {
+                alert("Please fill the title and markdown body")
+                return
+            }
+            const req = await fetch(`${import.meta.env.VITE_PORT}/blog/post-blog`, {
+                method: "POST",
+                headers: {
+                    'Content-Type': 'application/json',
+                    'token': token.medium,
+                    'userid': userDetailsRes.id
+                },
+                body: JSON.stringify({
+                    title: title,
+                    tags: tags.medium,
+                    content: markdown,
+                })
+            })
+            const postedBlog = await req.json()
+        } catch (error) {
+            console.log(error.message)
+        }
+    }
+
     const saveToken = async () => {
-        console.log(token)
+        setSaveLoading(true)
+        try {
+            const id = user.user.id
+            const req = await fetch(`${import.meta.env.VITE_PORT}/user/add-token`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    id, tokens: token
+                })
+            })
+            const res = await req.json()
+            if (req.status == 200) {
+                return
+            }
+        } catch (error) {
+            console.log(error.message)
+        }
+        setSaveLoading(false)
     }
 
     return (
@@ -116,7 +193,7 @@ const Editor = () => {
                     </>
                 )
             })]} />}
-            <div className={`h-${publish ? "[340px]" : "0"} transition-all duration-500 bg-transparent w-80 ${publish ? "border-2" : ""} border-[#191818] rounded-md absolute left-[52%] top-14 overflow-hidden`} style={{ height: publish ? "340px" : "0" }}>
+            <div className={`transition-all duration-500 bg-transparent w-80 ${publish ? "border-2" : ""} border-[#191818] rounded-md absolute left-[52%] top-14 overflow-hidden`} style={{ height: publish ? "460px" : "0" }}>
                 <h1 className='text-xl font-bold text-[#024643] text-start mt-2 mx-4'>Choose Your Platform</h1>
                 <div className='flex justify-around px-4 mt-3'>
                     <button onClick={() => setSelect("medium")}><img className='h-7 w-20 object-cover object-right' src="/medium.png" alt="" /></button>
@@ -136,8 +213,21 @@ const Editor = () => {
                     <p className='text-[#547B79] text-start mt-4 text-sm font-medium leading-4'>Note: To generate a auth-token {underline[select][1]}</p>
                     <p className='text-[#547B79] text-start my-2 text-sm font-medium leading-4'>Note: We wont be getting access to any of your password and youll be able to delete the auth-token whenever you want</p>
                 </div>
-                <div className='flex justify-between px-4'>
-                    <button className='bg-[#714DFF] hover:bg-[#714dffd5] px-3 py-1 rounded-md text-[#FAFAFA]' onClick={saveToken}>Save</button>
+                <div className='flex flex-col px-2'>
+                    <label htmlFor="" className='text-[#547B79] text-start mb-1 text-sm font-medium leading-4'>Title for the Blog</label>
+                    <input type="text" onChange={(e) => setTitle(e.target.value)} className='bg-[#547B79] rounded-md px-2 py-1' />
+                    <label htmlFor="" className='text-[#547B79] text-start mb-1 text-sm font-medium leading-4'>Tags</label>
+                    <input type="text" onChange={(e) =>
+                        setTags(prevTag => ({
+                            ...prevTag,
+                            [select]: e.target.value
+                        }))} placeholder='"football", "coding"' className='bg-[#547B79] rounded-md px-2 py-1' />
+                </div>
+                <div className='flex justify-between px-4 mt-4'>
+                    <div>
+                        <button className='bg-[#714DFF] mr-2 hover:bg-[#714dffd5] px-3 py-1 rounded-md text-[#FAFAFA]' onClick={saveToken}>{saveLoading ? "Processing..." : "Save"}</button>
+                        <button className='bg-[#714DFF] hover:bg-[#714dffd5] px-3 py-1 rounded-md text-[#FAFAFA]' onClick={postBlog}>Post</button>
+                    </div>
                     <button className='bg-black hover:bg-gray-700 px-3 py-1 rounded-md text-[#FAFAFA]' onClick={() => setPublish(false)}>Close</button>
                 </div>
             </div>
@@ -146,3 +236,22 @@ const Editor = () => {
 }
 
 export default Editor
+
+
+// try {
+//     const userMediumId = await fetch('https://api.medium.com/v1/me', {
+//         method: "GET",
+//         headers: {
+//             "Authorization": `Bearer ${token['medium']}`,
+//             "Content-Type": 'application/json',
+//             "Accept": 'application/json',
+//             "Accept-charset": 'utf-8'
+//         }
+//     })
+//     const res = await userMediumId.json()
+//     if (userMediumId.status == 200) {
+//         console.log(res)
+//     }
+// } catch (error) {
+//     console.log(error.message)
+// }
