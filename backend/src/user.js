@@ -43,16 +43,22 @@ router.get('/get-token', async (req, res) => {
 
 router.post('/add-token', async (req, res) => {
     try {
-        const { id, tokens } = await req.body
+        const { id, tokens, hashnodepubId } = await req.body
         if (!tokens || !id) {
             return res.json({ message: "Please provide the credentials" })
         }
-        const userTokens = await prisma.user.create({
-            data: {
-                id, tokens
+        const userTokens = await prisma.user.upsert({
+            where: {
+                id
+            },
+            create: {
+                id, tokens, hashnodepubId
+            },
+            update: {
+                id, tokens, hashnodepubId
             }
         })
-        if (res) {
+        if (userTokens) {
             return res.json({ userTokens }).status(200)
         }
     } catch (error) {

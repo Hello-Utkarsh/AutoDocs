@@ -8,17 +8,22 @@ import { SignedIn, UserButton, useUser } from '@clerk/clerk-react'
 const Editor = () => {
     const [publish, setPublish] = useState(false)
     const [select, setSelect] = useState("medium")
-    const [title, setTitle] = useState('')
+    const [subtitle, setSubTitle] = useState('')
+    const [hashnodePublicationId, setPublicationId] = useState('')
+    const [title, setTitle] = useState({ medium: '', hashnode: '' })
     const [tags, setTags] = useState({ medium: "" })
     const [token, setToken] = useState({ medium: "", hashnode: "", 'dev-to': "", x: "" })
-    const underline = { "medium": ["w-20 left-[22px]", "go to medium.com > setting > Security and apps > Integration token"], "dev-to": ["w-8 left-[124px]"], "hashnode": ["w-8 left-[188px] mt-1"], "x": ["w-10 left-[248px] mt-1"] }
+    const underline = {
+        "medium": ["w-20 left-[30px]", "go to medium.com > setting > Security and apps > Integration token"],
+        "dev-to": ["w-8 left-[148px]", ""],
+        "hashnode": ["w-8 left-[228px] mt-1", "go to hashnode.com > settings > developer and generate an auth-token. We'll also require a publicationId, for that go to hashnode.com > settings > blogs > blog dashboard/setting icon > copy the id from the url hashnode.com/{publicationId}/dashboard"],
+        "x": ["w-10 left-[304px] mt-1", ""]
+    }
     const [saveLoading, setSaveLoading] = useState(false)
-
     const [tableId, setTableId] = useRecoilState(table_id)
     const set_created_doc = useSetRecoilState(doc_created)
     const [markdown, setMarkdown] = useState("# **Welcome**")
     const [key, setKey] = useState(true)
-    // const [notes, setNotes] = useState("")
     const user = useUser()
     const select_note_id = useRecoilValue(note_id)
 
@@ -94,6 +99,7 @@ const Editor = () => {
             const res = await req.json()
             if (req.status == 200) {
                 setToken(res.token.tokens)
+                setPublicationId(res.token.hashnodepubId)
             }
         } catch (error) {
             console.log(error.message)
@@ -106,31 +112,37 @@ const Editor = () => {
             return
         }
         try {
-            const userDetailsReq = await fetch(`${import.meta.env.VITE_PORT}/user/medium-user-data`, {
+            console.log("here")
+            const mediumDetailsReq = await fetch(`${import.meta.env.VITE_PORT}/user/medium-user-data`, {
                 method: "GET",
                 headers: {
                     "token": `${token.medium}`,
                 }
             })
-            const userDetailsRes = await userDetailsReq.json()
+            const mediumDetailsRes = await mediumDetailsReq.json()
             if (markdown == "" || title == "") {
                 alert("Please fill the title and markdown body")
                 return
             }
+            console.log(title)
             const req = await fetch(`${import.meta.env.VITE_PORT}/blog/post-blog`, {
                 method: "POST",
                 headers: {
                     'Content-Type': 'application/json',
-                    'token': token.medium,
-                    'userid': userDetailsRes.id
+                    'token': JSON.stringify(token),
+                    'userid': mediumDetailsRes.id,
+                    'publicationid': hashnodePublicationId,
+                    'platforms': ['hashnode']
                 },
                 body: JSON.stringify({
                     title: title,
+                    subtitle,
                     tags: tags.medium,
                     content: markdown,
                 })
             })
             const postedBlog = await req.json()
+            console.log(postedBlog)
         } catch (error) {
             console.log(error.message)
         }
@@ -140,18 +152,21 @@ const Editor = () => {
         setSaveLoading(true)
         try {
             const id = user.user.id
+            console.log(hashnodePublicationId)
             const req = await fetch(`${import.meta.env.VITE_PORT}/user/add-token`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
                 },
                 body: JSON.stringify({
-                    id, tokens: token
+                    id, tokens: token, hashnodepubId: hashnodePublicationId
                 })
             })
             const res = await req.json()
+            console.log(res)
             if (req.status == 200) {
-                return
+                setToken(res.userTokens.tokens)
+                setPublicationId(res.userTokens.hashnodepubId)
             }
         } catch (error) {
             console.log(error.message)
@@ -193,7 +208,7 @@ const Editor = () => {
                     </>
                 )
             })]} />}
-            <div className={`transition-all duration-500 bg-transparent w-80 ${publish ? "border-2" : ""} border-[#191818] rounded-md absolute left-[52%] top-14 overflow-hidden`} style={{ height: publish ? "460px" : "0" }}>
+            <div className={`transition-all duration-500 bg-transparent w-96 ${publish ? "border-2" : ""} border-[#191818] rounded-md absolute left-[52%] top-14 overflow-hidden`} style={{ height: publish ? "560px" : "0" }}>
                 <h1 className='text-xl font-bold text-[#024643] text-start mt-2 mx-4'>Choose Your Platform</h1>
                 <div className='flex justify-around px-4 mt-3'>
                     <button onClick={() => setSelect("medium")}><img className='h-7 w-20 object-cover object-right' src="/medium.png" alt="" /></button>
@@ -215,13 +230,22 @@ const Editor = () => {
                 </div>
                 <div className='flex flex-col px-2'>
                     <label htmlFor="" className='text-[#547B79] text-start mb-1 text-sm font-medium leading-4'>Title for the Blog</label>
-                    <input type="text" onChange={(e) => setTitle(e.target.value)} className='bg-[#547B79] rounded-md px-2 py-1' />
-                    <label htmlFor="" className='text-[#547B79] text-start mb-1 text-sm font-medium leading-4'>Tags</label>
-                    <input type="text" onChange={(e) =>
+                    <input type="text" onChange={(e) => setTitle((prev) => ({
+                        ...prev,
+                        [select]: e.target.value
+                    }))} placeholder='Required' className='bg-[#547B79] rounded-md px-2 py-1' />
+                    {select == 'hashnode' && <label htmlFor="" className='text-[#547B79] text-start mb-1 text-sm font-medium leading-4'>PublicationId</label>}
+                    {select == 'hashnode' && <input type="text" onChange={(e) =>
+                        setPublicationId(e.target.value)} value={hashnodePublicationId} placeholder='Required' className='bg-[#547B79] rounded-md px-2 py-1' />}
+                    {select == 'hashnode' && <label htmlFor="" className='text-[#547B79] text-start mb-1 text-sm font-medium leading-4'>Subtitle</label>}
+                    {select == 'hashnode' && <input type="text" onChange={(e) =>
+                        setSubTitle(e.target.value)} placeholder='Not required' className='bg-[#547B79] rounded-md px-2 py-1' />}
+                    {select != 'hashnode' && <label htmlFor="" className='text-[#547B79] text-start mb-1 text-sm font-medium leading-4'>Tags</label>}
+                    {select != 'hashnode' && <input type="text" onChange={(e) =>
                         setTags(prevTag => ({
                             ...prevTag,
                             [select]: e.target.value
-                        }))} placeholder='"football", "coding"' className='bg-[#547B79] rounded-md px-2 py-1' />
+                        }))} placeholder='"football", "coding"' className='bg-[#547B79] rounded-md px-2 py-1' />}
                 </div>
                 <div className='flex justify-between px-4 mt-4'>
                     <div>
@@ -236,22 +260,3 @@ const Editor = () => {
 }
 
 export default Editor
-
-
-// try {
-//     const userMediumId = await fetch('https://api.medium.com/v1/me', {
-//         method: "GET",
-//         headers: {
-//             "Authorization": `Bearer ${token['medium']}`,
-//             "Content-Type": 'application/json',
-//             "Accept": 'application/json',
-//             "Accept-charset": 'utf-8'
-//         }
-//     })
-//     const res = await userMediumId.json()
-//     if (userMediumId.status == 200) {
-//         console.log(res)
-//     }
-// } catch (error) {
-//     console.log(error.message)
-// }
