@@ -10,12 +10,12 @@ const Editor = () => {
     const [select, setSelect] = useState("medium")
     const [subtitle, setSubTitle] = useState('')
     const [hashnodePublicationId, setPublicationId] = useState('')
-    const [title, setTitle] = useState({ medium: '', hashnode: '' })
+    const [title, setTitle] = useState('')
     const [tags, setTags] = useState({ medium: "" })
     const [token, setToken] = useState({ medium: "", hashnode: "", 'dev-to': "", x: "" })
     const underline = {
         "medium": ["w-20 left-[30px]", "go to medium.com > setting > Security and apps > Integration token"],
-        "dev-to": ["w-8 left-[148px]", ""],
+        "dev-to": ["w-8 left-[148px]", "go to https://dev.to/settings/extensions > Generate API Key"],
         "hashnode": ["w-8 left-[228px] mt-1", "go to hashnode.com > settings > developer and generate an auth-token. We'll also require a publicationId, for that go to hashnode.com > settings > blogs > blog dashboard/setting icon > copy the id from the url hashnode.com/{publicationId}/dashboard"],
         "x": ["w-10 left-[304px] mt-1", ""]
     }
@@ -111,6 +111,20 @@ const Editor = () => {
             alert("please enter a auth-token for any of the platform mentioned")
             return
         }
+        if (token.hashnode != "" && hashnodePublicationId == "") {
+            alert("Please enter the publicationId to post on hashnode")
+        }
+        const platform = []
+        Array.from(Object.keys(token)).map(x => {
+            if ((token[x] != "")) {
+                platform.push(x)
+            }
+        })
+        console.log(token.hashnode)
+        if (platform.includes('hashnode') && (!title || !markdown || token.hashnode == "" || !hashnodePublicationId)) {
+            alert("Please provide the mentioned details")
+            return
+        }
         try {
             console.log("here")
             const mediumDetailsReq = await fetch(`${import.meta.env.VITE_PORT}/user/medium-user-data`, {
@@ -120,19 +134,18 @@ const Editor = () => {
                 }
             })
             const mediumDetailsRes = await mediumDetailsReq.json()
-            if (markdown == "" || title == "") {
-                alert("Please fill the title and markdown body")
+            if (platform.includes('medium') && (!title || !markdown || !token.medium || !mediumDetailsRes.id)) {
+                alert("Please provide the mentioned details")
                 return
             }
-            console.log(title)
             const req = await fetch(`${import.meta.env.VITE_PORT}/blog/post-blog`, {
                 method: "POST",
                 headers: {
                     'Content-Type': 'application/json',
                     'token': JSON.stringify(token),
-                    'userid': mediumDetailsRes.id,
-                    'publicationid': hashnodePublicationId,
-                    'platforms': ['hashnode']
+                    'mediumuserid': mediumDetailsRes.id,
+                    hashnodePublicationId,
+                    'platforms': platform
                 },
                 body: JSON.stringify({
                     title: title,
@@ -230,10 +243,7 @@ const Editor = () => {
                 </div>
                 <div className='flex flex-col px-2'>
                     <label htmlFor="" className='text-[#547B79] text-start mb-1 text-sm font-medium leading-4'>Title for the Blog</label>
-                    <input type="text" onChange={(e) => setTitle((prev) => ({
-                        ...prev,
-                        [select]: e.target.value
-                    }))} placeholder='Required' className='bg-[#547B79] rounded-md px-2 py-1' />
+                    <input type="text" onChange={(e) => setTitle(e.target.value)} placeholder='Required' className='bg-[#547B79] rounded-md px-2 py-1' />
                     {select == 'hashnode' && <label htmlFor="" className='text-[#547B79] text-start mb-1 text-sm font-medium leading-4'>PublicationId</label>}
                     {select == 'hashnode' && <input type="text" onChange={(e) =>
                         setPublicationId(e.target.value)} value={hashnodePublicationId} placeholder='Required' className='bg-[#547B79] rounded-md px-2 py-1' />}
