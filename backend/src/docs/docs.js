@@ -1,9 +1,9 @@
-const prisma = require('../../prisma/db')
-const express = require('express')
-const { route } = require('../tables/tables')
-const { number } = require('zod')
+import prisma from '../../prisma/db.js';  // Ensure to include .js
+import express from 'express';
+// import { route } from '../tables/tables.js';  // Ensure to include .js
+// import { number } from 'zod';
+import { z } from 'zod';  // Destructure z from zod
 const router = express.Router()
-const z = require('zod').z
 
 const typeDocs = z.object({
     name: z.string(),
@@ -68,4 +68,4 @@ router.post('/get-docs-id', async (req, res) => {
     }
 })
 
-module.exports = router
+export default router

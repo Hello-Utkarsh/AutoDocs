@@ -1,10 +1,10 @@
-const express = require('express')
-const table = require('./tables/tables')
-const docs = require('./docs/docs')
-const parser = require('body-parser')
-const cors = require('cors')
-const user = require('./user')
-const blog = require('./blog')
+import express from 'express';
+import table from './tables/tables.js';
+import docs from './docs/docs.js';
+import parser from 'body-parser';
+import cors from 'cors';
+import user from './user.js';
+import blog from './blog.js';
 const app = express()
 const port = 3000
 

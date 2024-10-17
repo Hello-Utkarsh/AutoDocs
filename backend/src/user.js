@@ -1,5 +1,5 @@
-const prisma = require('../prisma/db')
-const express = require('express')
+import prisma from '../prisma/db.js'
+import express from 'express'
 const router = express.Router()
 
 router.get('/medium-user-data', async(req, res) => {
@@ -102,4 +102,4 @@ router.delete('/delete/:id', async (req, res) => {
     }
 })
 
-module.exports = router
+export default router

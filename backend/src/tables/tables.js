@@ -1,7 +1,7 @@
-const prisma = require('../../prisma/db')
-const express = require('express')
+import prisma from '../../prisma/db.js'
+import express from 'express'
+import { z } from 'zod'
 const router = express.Router()
-const z = require('zod').z
 
 const tableCheck = z.object({
     user_id: z.string(),
@@ -80,4 +80,4 @@ router.delete('/delete', async (req, res) => {
 })
 
 
-module.exports = router
+export default router

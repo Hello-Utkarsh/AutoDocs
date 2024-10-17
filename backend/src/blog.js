@@ -1,5 +1,6 @@
-const prisma = require('../prisma/db')
-const express = require('express')
+import fetch from 'node-fetch'
+import prisma from '../prisma/db.js'
+import express from 'express'
 const router = express.Router()
 
 const mediumApi = async (mediumuserid, token, title, content, tags) => {
@@ -50,6 +51,7 @@ const devToApi = async (title, content, tags, token) => {
 }
 
 const hashnodeApi = async (token, title, subtitle, hashnodepublicationid, contentMarkdown) => {
+    console.log(subtitle)
     try {
         const req = await fetch('https://gql.hashnode.com/', {
             method: 'POST',
@@ -106,11 +108,11 @@ router.post('/post-blog', async (req, res) => {
                 return { [x]: fetchedData };
             })
         );
-        console.log(posted)
         return res.status(200).json({ posted })
     } catch (error) {
+        console.log(error)
         return res.status(400).json({ message: error.message })
     }
 })
 
-module.exports = router
+export default router

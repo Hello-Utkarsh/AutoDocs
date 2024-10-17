@@ -14,10 +14,10 @@ const Editor = () => {
     const [tags, setTags] = useState({ medium: "" })
     const [token, setToken] = useState({ medium: "", hashnode: "", 'dev-to': "", x: "" })
     const underline = {
-        "medium": ["w-20 left-[30px]", "go to medium.com > setting > Security and apps > Integration token"],
-        "dev-to": ["w-8 left-[148px]", "go to https://dev.to/settings/extensions > Generate API Key"],
-        "hashnode": ["w-8 left-[228px] mt-1", "go to hashnode.com > settings > developer and generate an auth-token. We'll also require a publicationId, for that go to hashnode.com > settings > blogs > blog dashboard/setting icon > copy the id from the url hashnode.com/{publicationId}/dashboard"],
-        "x": ["w-10 left-[304px] mt-1", ""]
+        "medium": ["w-20 left-[30px]", "go to medium.com > setting > Security and apps > Integration token", "445px"],
+        "dev-to": ["w-8 left-[148px]", "go to https://dev.to/settings/extensions > Generate API Key", "445px"],
+        "hashnode": ["w-8 left-[228px] mt-1", "go to hashnode.com > settings > developer and generate an auth-token. We'll also require a publicationId, for that go to hashnode.com > settings > blogs > blog dashboard/setting icon > copy the id from the url hashnode.com/{publicationId}/dashboard", "560px"],
+        "x": ["w-10 left-[304px] mt-1", "", "430px"]
     }
     const [saveLoading, setSaveLoading] = useState(false)
     const [tableId, setTableId] = useRecoilState(table_id)
@@ -120,8 +120,11 @@ const Editor = () => {
                 platform.push(x)
             }
         })
-        console.log(token.hashnode)
-        if (platform.includes('hashnode') && (!title || !markdown || token.hashnode == "" || !hashnodePublicationId)) {
+        if (platform.includes('hashnode') && (!title || !subtitle || !markdown || token.hashnode == "" || !hashnodePublicationId)) {
+            if ( subtitle.length<6) {
+                alert("subtitle must be of 6 letters")
+                return
+            }
             alert("Please provide the mentioned details")
             return
         }
@@ -221,7 +224,7 @@ const Editor = () => {
                     </>
                 )
             })]} />}
-            <div className={`transition-all duration-500 bg-transparent w-96 ${publish ? "border-2" : ""} border-[#191818] rounded-md absolute left-[52%] top-14 overflow-hidden`} style={{ height: publish ? "560px" : "0" }}>
+            <div className={`transition-all duration-500 bg-transparent w-96 ${publish ? "border-2" : ""} border-[#191818] rounded-md absolute left-[52%] top-14 overflow-hidden`} style={{ height: publish ? underline[select][2] : "0" }}>
                 <h1 className='text-xl font-bold text-[#024643] text-start mt-2 mx-4'>Choose Your Platform</h1>
                 <div className='flex justify-around px-4 mt-3'>
                     <button onClick={() => setSelect("medium")}><img className='h-7 w-20 object-cover object-right' src="/medium.png" alt="" /></button>
