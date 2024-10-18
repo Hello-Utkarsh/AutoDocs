@@ -26,6 +26,7 @@ const Editor = () => {
     const [key, setKey] = useState(true)
     const user = useUser()
     const select_note_id = useRecoilValue(note_id)
+    const [errors, setErrors] = useState({ hashnode: '', ['dev-to']: '', medium: "" })
 
     const note_content = async () => {
         if (tableId) {
@@ -120,16 +121,7 @@ const Editor = () => {
                 platform.push(x)
             }
         })
-        if (platform.includes('hashnode') && (!title || !subtitle || !markdown || token.hashnode == "" || !hashnodePublicationId)) {
-            if ( subtitle.length<6) {
-                alert("subtitle must be of 6 letters")
-                return
-            }
-            alert("Please provide the mentioned details")
-            return
-        }
         try {
-            console.log("here")
             const mediumDetailsReq = await fetch(`${import.meta.env.VITE_PORT}/user/medium-user-data`, {
                 method: "GET",
                 headers: {
@@ -138,6 +130,18 @@ const Editor = () => {
             })
             const mediumDetailsRes = await mediumDetailsReq.json()
             if (platform.includes('medium') && (!title || !markdown || !token.medium || !mediumDetailsRes.id)) {
+                alert("Please provide the mentioned details")
+                return
+            }
+            if (platform.includes('dev-to') && (!title || !markdown || !token['dev-to'])) {
+                alert("Please provide the mentioned details")
+                return
+            }
+            if (platform.includes('hashnode') && (!title || !subtitle || !markdown || token.hashnode == "" || !hashnodePublicationId)) {
+                if (subtitle.length < 6) {
+                    alert("subtitle must be of 6 letters")
+                    return
+                }
                 alert("Please provide the mentioned details")
                 return
             }
@@ -157,8 +161,38 @@ const Editor = () => {
                     content: markdown,
                 })
             })
-            const postedBlog = await req.json()
-            console.log(postedBlog)
+            const postedBlog = (await req.json()).posted
+            const errPlatforms = Object.keys(postedBlog).map(x => {
+                if (postedBlog[x].error || postedBlog[x].errors) {
+                    return x
+                }
+            })
+            alert(`Oops, The post failed to publish on ${errPlatforms.map(x => { return x })}`)
+        } catch (error) {
+            console.log(error.message)
+        }
+    }
+
+    const deleteToken = async () => {
+        token[select] = ""
+        try {
+            const id = user.user.id
+            console.log(hashnodePublicationId)
+            const req = await fetch(`${import.meta.env.VITE_PORT}/user/add-token`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    id, tokens: token, hashnodepubId: hashnodePublicationId
+                })
+            })
+            const res = await req.json()
+            console.log(res)
+            if (req.status == 200) {
+                setToken(res.userTokens.tokens)
+                setPublicationId(res.userTokens.hashnodepubId)
+            }
         } catch (error) {
             console.log(error.message)
         }
@@ -234,7 +268,12 @@ const Editor = () => {
                 </div>
                 <div className={`${underline[select][0]} bg-[#024643] h-1 rounded-md absolute transition-all duration-200`} />
                 <div className='flex flex-col mx-2 my-2 mt-4'>
-                    <label htmlFor="" className='text-start my-1 text-[#024643] text-sm font-medium'>Auth-Token</label>
+                    <div className='flex justify-between items-center'>
+                        <label htmlFor="" className='text-start my-1 text-[#024643] text-sm font-medium'>Auth-Token</label>
+                        <span onClick={deleteToken} className="material-symbols-outlined text-[19px] text-red-500 font-medium cursor-pointer mr-2">
+                    delete
+                  </span>
+                    </div>
                     <input onChange={(e) => {
                         setToken(prevToken => ({
                             ...prevToken,

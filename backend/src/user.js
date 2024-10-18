@@ -66,40 +66,4 @@ router.post('/add-token', async (req, res) => {
     }
 })
 
-router.put('/update', async (req, res) => {
-    try {
-        const { id, tokens } = req.body
-        if (!tokens || !id) {
-            return res.status(400).json({ message: "Please provide the credentials" })
-        }
-        const userTokens = await prisma.user.update({
-            where: { id },
-            data: { tokens }
-        })
-        if (userTokens) {
-            return res.status(200).json({ userTokens })
-        }
-    } catch (error) {
-        console.log(error.status)
-        return res.status(error.status).json({ message: error.message })
-    }
-})
-
-router.delete('/delete/:id', async (req, res) => {
-    try {
-        const { id } = req.params
-        if (!id) {
-            return res.json({ message: "Please provide the reuqired creds" })
-        }
-        const userTokens = await prisma.user.delete({
-            where: { id }
-        })
-        if (userTokens) {
-            return res.json({ message: "success" })
-        }
-    } catch (error) {
-        return res.json({ message: error.message })
-    }
-})
-
 export default router

@@ -8,22 +8,26 @@ const mediumApi = async (mediumuserid, token, title, content, tags) => {
         const req = await fetch(`https://api.medium.com/v1/users/${mediumuserid}/posts`, {
             method: "POST",
             headers: {
-                'Authorization': `Bearer ${token}`,
+                // 'Authorization': `Bearer ${token}`,
                 'Accept': 'application/json',
                 'Accept-Charset': 'utf-8',
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify({
-                "title": title,
+                // "title": title,
                 "contentFormat": "markdown",
-                "content": content,
+                // "content": content,
                 "tags": [tags],
                 "publishStatus": "public"
             })
         })
-        return await req.json()
+        const res = await req.json()
+        if(res.data){
+            return res.data
+        }
+        return res
     } catch (error) {
-        return error.message
+        return error
     }
 }
 
@@ -37,7 +41,7 @@ const devToApi = async (title, content, tags, token) => {
             },
             body: JSON.stringify({
                 "article": {
-                    "title": title,
+                    // "title": title,
                     "published": true,
                     "body_markdown": content,
                     "tags": [tags]
@@ -51,7 +55,6 @@ const devToApi = async (title, content, tags, token) => {
 }
 
 const hashnodeApi = async (token, title, subtitle, hashnodepublicationid, contentMarkdown) => {
-    console.log(subtitle)
     try {
         const req = await fetch('https://gql.hashnode.com/', {
             method: 'POST',
@@ -63,7 +66,7 @@ const hashnodeApi = async (token, title, subtitle, hashnodepublicationid, conten
                 "query": "mutation PublishPost($input: PublishPostInput!) { publishPost(input: $input) { post { id } } }",
                 "variables": {
                     "input": {
-                        "title": title,
+                        // "title": title,
                         "subtitle": subtitle,
                         "publicationId": hashnodepublicationid,
                         "contentMarkdown": contentMarkdown
@@ -71,9 +74,13 @@ const hashnodeApi = async (token, title, subtitle, hashnodepublicationid, conten
                 }
             })
         })
-        return await req.json()
+        const res = await req.json()
+        if (res.data) {
+            return res.data.publishPost.post
+        }
+        throw res
     } catch (error) {
-        return error.message
+        return error
     }
 }
 
@@ -102,12 +109,11 @@ router.post('/post-blog', async (req, res) => {
             return res.status(400).json({ message: "Please provide the mentioned details for daily.to" })
         }
         // looping in the platform and calling the function accordingly
-        const posted = await Promise.all(
-            platformsArray.map(async (x) => {
-                const fetchedData = await postApis[x]();
-                return { [x]: fetchedData };
-            })
-        );
+        const posted = await platformsArray.reduce(async (accPromise, x) => {
+            const acc = await accPromise;
+            const fetchedData = await postApis[x]();
+            return { ...acc, [x]: fetchedData };
+        }, Promise.resolve({}));
         return res.status(200).json({ posted })
     } catch (error) {
         console.log(error)
