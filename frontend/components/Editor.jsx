@@ -2,10 +2,11 @@ import React, { useEffect, useState } from 'react'
 import { BlockTypeSelect, BoldItalicUnderlineToggles, codeBlockPlugin, codeMirrorPlugin, ConditionalContents, InsertCodeBlock, listsPlugin, ListsToggle, MDXEditor, toolbarPlugin, UndoRedo, headingsPlugin, Button } from '@mdxeditor/editor'
 import '@mdxeditor/editor/style.css'
 import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil'
-import { note_id, doc_created, table_id } from '../states/state'
-import { SignedIn, UserButton, useUser } from '@clerk/clerk-react'
+import { note_id, doc_created, table_id, user_table } from '../states/state'
+import { useClerk, useUser } from '@clerk/clerk-react'
 
 const Editor = () => {
+    const { signOut } = useClerk()
     const [publish, setPublish] = useState(false)
     const [select, setSelect] = useState("medium")
     const [subtitle, setSubTitle] = useState('')
@@ -22,11 +23,45 @@ const Editor = () => {
     const [saveLoading, setSaveLoading] = useState(false)
     const [tableId, setTableId] = useRecoilState(table_id)
     const set_created_doc = useSetRecoilState(doc_created)
-    const [markdown, setMarkdown] = useState("# **Welcome**")
+    const [table, setTable] = useRecoilState(user_table)
+    const [markdown, setMarkdown] = useState("# **Welcome, Please select/create a table**")
     const [key, setKey] = useState(true)
     const user = useUser()
     const select_note_id = useRecoilValue(note_id)
+    const select_note = useSetRecoilState(note_id)
     const [errors, setErrors] = useState({ hashnode: '', ['dev-to']: '', medium: "" })
+
+    const delete_note = async (id) => {
+        if (!id) {
+            alert('Please select the doc to delete')
+        }
+        try {
+            const req = await fetch(`${import.meta.env.VITE_PORT}/docs/delete-doc/${id}`, {
+                method: 'DELETE',
+                headers: {
+                    'Content-Type': 'application/json',
+                }
+            })
+            const res = await req.json()
+            if (res.message == 'success') {
+                const new_tables = table.map(x => {
+                    const key = Object.keys(x)[0]
+                    let docs = x[Object.keys(x)[0]]
+                    if (Object.keys(docs).length == 1) {
+                        const table_id = docs[0].table_id
+                        docs = docs.filter(x => x.id != res.id)
+                        return { [key]: [{table_id}] }
+                    }
+                    docs = docs.filter(x => x.id != res.id)
+                    return { [key]: docs }
+                })
+                select_note(new_tables[0][Object.keys(new_tables[0])][0]?.id | null)
+                setTable(new_tables)
+            }
+        } catch (error) {
+            console.log(error)
+        }
+    }
 
     const note_content = async () => {
         if (tableId) {
@@ -50,19 +85,24 @@ const Editor = () => {
         }
     }
 
-
-
-
     useEffect(() => {
         if (select_note_id || tableId) {
             note_content()
         }
-        getToken()
+        if (user.user?.id) {
+            getToken()
+        }
     }, [select_note_id, tableId])
 
     const save_docs = async () => {
         const name = document.getElementById('doc_name').value
-        if (tableId) {
+        if (!name && !select_note_id) {
+            return alert("Please enter a name for the docs")
+        }
+        if (!tableId && !select_note_id) {
+            return alert("Please select the table in which you would to create the docs")
+        }
+        if (tableId || select_note_id) {
             try {
                 const req = await fetch(`${import.meta.env.VITE_PORT}/docs/create-docs`, {
                     method: 'POST',
@@ -71,7 +111,8 @@ const Editor = () => {
                     },
                     body: JSON.stringify({
                         name,
-                        table_id: tableId,
+                        note_id: select_note_id | null,
+                        table_id: tableId | null,
                         user_id: user.user.id,
                         content: markdown,
                         publish: false
@@ -79,7 +120,8 @@ const Editor = () => {
                 })
 
                 const response = await req.json()
-                console.log(response)
+                select_note(response.docs.id)
+                setTable(p => [...p, response.docs])
                 setTableId(false)
                 set_created_doc(p => !p)
             } catch (error) {
@@ -177,7 +219,6 @@ const Editor = () => {
         token[select] = ""
         try {
             const id = user.user.id
-            console.log(hashnodePublicationId)
             const req = await fetch(`${import.meta.env.VITE_PORT}/user/add-token`, {
                 method: 'POST',
                 headers: {
@@ -188,7 +229,6 @@ const Editor = () => {
                 })
             })
             const res = await req.json()
-            console.log(res)
             if (req.status == 200) {
                 setToken(res.userTokens.tokens)
                 setPublicationId(res.userTokens.hashnodepubId)
@@ -202,7 +242,6 @@ const Editor = () => {
         setSaveLoading(true)
         try {
             const id = user.user.id
-            console.log(hashnodePublicationId)
             const req = await fetch(`${import.meta.env.VITE_PORT}/user/add-token`, {
                 method: 'POST',
                 headers: {
@@ -213,7 +252,6 @@ const Editor = () => {
                 })
             })
             const res = await req.json()
-            console.log(res)
             if (req.status == 200) {
                 setToken(res.userTokens.tokens)
                 setPublicationId(res.userTokens.hashnodepubId)
@@ -225,7 +263,7 @@ const Editor = () => {
     }
 
     return (
-        <div className='w-full bg-[#E1F7DD] text-center overflow-y-auto py-2'>
+        <div className='w-full bg-[#E1F7DD] text-center overflow-y-auto'>
             {markdown && <MDXEditor key={key} onChange={(e) => { if (e !== "") { setMarkdown(e) } }} markdown={markdown} contentEditableClassName="prose" plugins={[headingsPlugin(), listsPlugin(),
             codeBlockPlugin({ defaultCodeBlockLanguage: 'js' }),
             codeMirrorPlugin({ codeBlockLanguages: { js: 'JavaScript', css: 'CSS' } }),
@@ -254,6 +292,8 @@ const Editor = () => {
                             <input id='doc_name' placeholder='Name of doc' className='bg-[#FAFAFA] w-32 text-[#191818] rounded-lg h-7 mr-2 px-2'></input>
                             <Button className='hover:bg-[#714DFF] text-[#FAFAFA]' onClick={save_docs}>Save</Button>
                             <Button onClick={() => setPublish(e => !e)}>Publish</Button>
+                            <Button onClick={() => delete_note(select_note_id)}>Delete</Button>
+                            <Button onClick={() => signOut()}>Logout</Button>
                         </div>
                     </>
                 )
@@ -271,8 +311,8 @@ const Editor = () => {
                     <div className='flex justify-between items-center'>
                         <label htmlFor="" className='text-start my-1 text-[#024643] text-sm font-medium'>Auth-Token</label>
                         <span onClick={deleteToken} className="material-symbols-outlined text-[19px] text-red-500 font-medium cursor-pointer mr-2">
-                    delete
-                  </span>
+                            delete
+                        </span>
                     </div>
                     <input onChange={(e) => {
                         setToken(prevToken => ({

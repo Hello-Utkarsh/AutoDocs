@@ -10,7 +10,8 @@ export const handleDel = async (t, table, setTable) => {
         })
         const response = await req.json()
         if (response) {
-            setTable(table.filter(tab => tab[Object.keys(tab)][0].table_id !== t[Object.keys(t)][0].table_id))
+            const new_table = table.filter(x => Object.keys(x)[0] != Object.keys(t)[0])  
+            setTable(new_table)
         }
     } catch (error) {
         console.log(error.message)
@@ -43,7 +44,6 @@ export const createTable = async (name, id, setDialog, set_table_changed, setErr
 export const user_data = async (u) => {
 
     if (u.user) {
-
         const table_req = await fetch(`${import.meta.env.VITE_PORT}/table/get-table`, {
             method: 'POST',
             headers: {

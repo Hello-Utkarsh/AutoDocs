@@ -77,9 +77,9 @@ function App() {
           <img className='h-10 left-[69%] top-[95%] absolute animate-float' src="/x.png" alt="" />
         </div>
       </div>
-      <div className='py-12'>
-        <h1 className='text-3xl font-bold text-center'>Choose Your Plan</h1>
-        <p className='text-center text-lg mt-2'>Our plans are designed to be affordable, flexible and tailored to your unique needs.</p>
+      <div className='py-14'>
+        <h1 className='text-4xl text-black font-bold text-center'>Choose Your Plan</h1>
+        <p className='text-center text-lg mt-2 text-black'>Our plans are designed to be affordable, flexible and tailored to your unique needs.</p>
         <div className='flex justify-center mt-8'>
           <button className='px-4 py-2 h-fit bg-[#714DFF] rounded-3xl mx-2 text-[#FAFAFA] text-base font-medium'>Monthly</button>
           <button className='px-4 py-2 h-fit bg-[#FAFAFA] text-[#191818] rounded-3xl mx-2 border border-black text-base font-medium'>Yearly</button>

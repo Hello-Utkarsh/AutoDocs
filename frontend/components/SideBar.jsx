@@ -23,13 +23,14 @@ const SideBar = () => {
     if (!user.isSignedIn) {
       navigate('/')
     }
-    user_data(user).then(data => {
-      if (data) {
-        setTable([...data])
-      }
-    })
-    // set_doc_created(false)
-  }, [is_doc_created, doc_created, table_changed])
+    if (user) {
+      user_data(user).then(data => {
+        if (data) {
+          setTable([...data])
+        }
+      })
+    }
+  }, [is_doc_created, doc_created, table_changed, user_table])
 
   return (
     <div className='flex w-full'>
@@ -47,10 +48,12 @@ const SideBar = () => {
                   </span>
                 </div>
                 <div className='px-3'>
-                  {t[Object.keys(t)].map((note) => {
+                  {t[Object.keys(t)] && t[Object.keys(t)].map((note) => {
                     return <p key={note.id} onClick={() => { select_note_id(note.id) }} className='px-3 rounded-md cursor-pointer text-[#FAFAFA] mt-2'>{note.name}</p>
                   })}
-                  <p onClick={() => set_table_id(t[Object.keys(t)][0].table_id)} className='px-3 rounded-md cursor-pointer text-[#FAFAFA] mt-2 '>Create New</p>
+                  <p onClick={() => {
+                    select_note_id("")
+                    set_table_id(t[Object.keys(t)][0].table_id)}} className='px-3 rounded-md cursor-pointer text-[#FAFAFA] mt-2 '>Create New</p>
 
                 </div>
               </div>

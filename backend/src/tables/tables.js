@@ -5,8 +5,7 @@ const router = express.Router()
 
 const tableCheck = z.object({
     user_id: z.string(),
-    name: z.string(),
-    content: z.enum(["notes", "docs"]),
+    name: z.string()
 })
 
 // create tables
