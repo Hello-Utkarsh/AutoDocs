@@ -1,5 +1,4 @@
 import fetch from 'node-fetch'
-import prisma from '../prisma/db.js'
 import express from 'express'
 const router = express.Router()
 
@@ -8,15 +7,15 @@ const mediumApi = async (mediumuserid, token, title, content, tags) => {
         const req = await fetch(`https://api.medium.com/v1/users/${mediumuserid}/posts`, {
             method: "POST",
             headers: {
-                // 'Authorization': `Bearer ${token}`,
+                'Authorization': `Bearer ${token}`,
                 'Accept': 'application/json',
                 'Accept-Charset': 'utf-8',
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify({
-                // "title": title,
+                "title": title,
                 "contentFormat": "markdown",
-                // "content": content,
+                "content": content,
                 "tags": [tags],
                 "publishStatus": "public"
             })
@@ -41,7 +40,7 @@ const devToApi = async (title, content, tags, token) => {
             },
             body: JSON.stringify({
                 "article": {
-                    // "title": title,
+                    "title": title,
                     "published": true,
                     "body_markdown": content,
                     "tags": [tags]
@@ -66,7 +65,7 @@ const hashnodeApi = async (token, title, subtitle, hashnodepublicationid, conten
                 "query": "mutation PublishPost($input: PublishPostInput!) { publishPost(input: $input) { post { id } } }",
                 "variables": {
                     "input": {
-                        // "title": title,
+                        "title": title,
                         "subtitle": subtitle,
                         "publicationId": hashnodepublicationid,
                         "contentMarkdown": contentMarkdown

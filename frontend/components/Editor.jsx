@@ -12,7 +12,7 @@ const Editor = () => {
     const [subtitle, setSubTitle] = useState('')
     const [hashnodePublicationId, setPublicationId] = useState('')
     const [title, setTitle] = useState('')
-    const [tags, setTags] = useState({ medium: "" })
+    const [tags, setTags] = useState()
     const [token, setToken] = useState({ medium: "", hashnode: "", 'dev-to': "", x: "" })
     const underline = {
         "medium": ["w-20 left-[30px]", "go to medium.com > setting > Security and apps > Integration token", "445px"],
@@ -50,7 +50,7 @@ const Editor = () => {
                     if (Object.keys(docs).length == 1) {
                         const table_id = docs[0].table_id
                         docs = docs.filter(x => x.id != res.id)
-                        return { [key]: [{table_id}] }
+                        return { [key]: [{ table_id }] }
                     }
                     docs = docs.filter(x => x.id != res.id)
                     return { [key]: docs }
@@ -204,12 +204,16 @@ const Editor = () => {
                 })
             })
             const postedBlog = (await req.json()).posted
+            console.log(postedBlog)
             const errPlatforms = Object.keys(postedBlog).map(x => {
                 if (postedBlog[x].error || postedBlog[x].errors) {
                     return x
                 }
             })
-            alert(`Oops, The post failed to publish on ${errPlatforms.map(x => { return x })}`)
+            if (errPlatforms) {
+                console.log(errPlatforms)
+                alert(`Oops, The post failed to publish on ${errPlatforms.map(x => { if (x != undefined) { return x } })}`)
+            }
         } catch (error) {
             console.log(error.message)
         }
@@ -330,14 +334,11 @@ const Editor = () => {
                     {select == 'hashnode' && <input type="text" onChange={(e) =>
                         setPublicationId(e.target.value)} value={hashnodePublicationId} placeholder='Required' className='bg-[#547B79] rounded-md px-2 py-1' />}
                     {select == 'hashnode' && <label htmlFor="" className='text-[#547B79] text-start mb-1 text-sm font-medium leading-4'>Subtitle</label>}
-                    {select == 'hashnode' && <input type="text" onChange={(e) =>
+                    {select == 'hashnode' && <input type="text" value={subtitle} onChange={(e) =>
                         setSubTitle(e.target.value)} placeholder='Not required' className='bg-[#547B79] rounded-md px-2 py-1' />}
                     {select != 'hashnode' && <label htmlFor="" className='text-[#547B79] text-start mb-1 text-sm font-medium leading-4'>Tags</label>}
-                    {select != 'hashnode' && <input type="text" onChange={(e) =>
-                        setTags(prevTag => ({
-                            ...prevTag,
-                            [select]: e.target.value
-                        }))} placeholder='"football", "coding"' className='bg-[#547B79] rounded-md px-2 py-1' />}
+                    {select != 'hashnode' && <input type="text" value={tags} onChange={(e) =>
+                        setTags(e.target.value)} placeholder='"football", "coding"' className='bg-[#547B79] rounded-md px-2 py-1' />}
                 </div>
                 <div className='flex justify-between px-4 mt-4'>
                     <div>
