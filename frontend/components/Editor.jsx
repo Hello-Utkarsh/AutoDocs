@@ -64,11 +64,12 @@ const Editor = () => {
     }
 
     const note_content = async () => {
-        if (tableId) {
+        if (tableId && select_note_id == '') {
             setMarkdown(" ")
             setKey(p => !p)
         }
         else {
+            console.log(select_note_id)
             const req = await fetch(`${import.meta.env.VITE_PORT}/docs/get-docs-id`, {
                 method: 'POST',
                 headers: {
@@ -268,7 +269,7 @@ const Editor = () => {
 
     return (
         <div className='w-full bg-[#E1F7DD] text-center overflow-y-auto'>
-            {markdown && <MDXEditor key={key} onChange={(e) => { if (e !== "") { setMarkdown(e) } }} markdown={markdown} contentEditableClassName="prose" plugins={[headingsPlugin(), listsPlugin(),
+            {markdown && <MDXEditor key={key} className='overflow-x-hidden' onChange={(e) => { if (e !== "") { setMarkdown(e) } }} markdown={markdown} contentEditableClassName="prose" plugins={[headingsPlugin(), listsPlugin(),
             codeBlockPlugin({ defaultCodeBlockLanguage: 'js' }),
             codeMirrorPlugin({ codeBlockLanguages: { js: 'JavaScript', css: 'CSS' } }),
             toolbarPlugin({

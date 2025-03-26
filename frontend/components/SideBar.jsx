@@ -49,7 +49,9 @@ const SideBar = () => {
                 </div>
                 <div className='px-3'>
                   {t[Object.keys(t)] && t[Object.keys(t)].map((note) => {
-                    return <p key={note.id} onClick={() => { select_note_id(note.id) }} className='px-3 rounded-md cursor-pointer text-[#FAFAFA] mt-2'>{note.name}</p>
+                    return <p key={note.id} onClick={() => { 
+                      select_note_id(note.id)
+                     }} className='px-3 rounded-md cursor-pointer text-[#FAFAFA] mt-2'>{note.name}</p>
                   })}
                   <p onClick={() => {
                     select_note_id("")
