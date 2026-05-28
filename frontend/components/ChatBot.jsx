@@ -51,9 +51,9 @@ const ChatBot = () => {
           arrow_upward
         </span>
       </div>
-      <div className='flex flex-col px-3 w-full max-h-[21rem] overflow-y-auto'>
+      <div className='flex flex-col px-3 w-full max-h-84 overflow-y-auto'>
         {chat.length > 0 ? chat.map(text => {
-          return <div className='flex flex-col w-[100%] text-[#E1F7DD] relative'>
+          return <div className='flex flex-col w-full text-[#E1F7DD] relative'>
             {text[0] && <p className='text-left w-fit py-1 px-3 my-2 text-sm rounded-xl bg-[#024643]'>{text[0]}</p>}
             <MDXEditor readOnly className='chat-mdx text-left w-fit my-2 text-sm rounded-xl bg-[#024643]' markdown={text[1]} plugins={[headingsPlugin(), listsPlugin(), linkPlugin(), codeBlockPlugin({ defaultCodeBlockLanguage: 'js' }),
             codeMirrorPlugin({ codeBlockLanguages: { js: 'JavaScript', css: 'CSS' } }),]} />

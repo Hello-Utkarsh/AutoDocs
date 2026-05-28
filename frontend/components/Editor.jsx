@@ -4,6 +4,19 @@ import '@mdxeditor/editor/style.css'
 import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil'
 import { note_id, doc_created, table_id, user_table } from '../states/state'
 import { useClerk, useUser } from '@clerk/clerk-react'
+import {
+    Dialog,
+    DialogClose,
+    DialogContent,
+    DialogDescription,
+    DialogFooter,
+    DialogHeader,
+    DialogTitle,
+    DialogTrigger,
+} from "@/components/ui/dialog"
+import { Field, FieldGroup } from "@/components/ui/field"
+import { Input } from "@/components/ui/input"
+import { Label } from "@/components/ui/label"
 
 const Editor = () => {
     const { signOut } = useClerk()
@@ -268,23 +281,30 @@ const Editor = () => {
     }
 
     return (
-        <div className='w-full bg-[#E1F7DD] text-center overflow-y-auto'>
-            {markdown && <MDXEditor key={key} className='overflow-x-hidden' onChange={(e) => { if (e !== "") { setMarkdown(e) } }} markdown={markdown} contentEditableClassName="prose" plugins={[headingsPlugin(), listsPlugin(),
+        <div className='w-full bg-[#FCF9F4] overflow-y-auto'>
+            <div className="w-full flex justify-between items-center text-center px-6 py-2 text-black border-b border-[#A0A8B1]">
+                <h1 className='border-0 border-b-2 w-fit md:text-lg border-gray-400'>Blog 1</h1>
+                <span className='flex gap-3'>
+                    <button className='border border-black hover:bg-[#C1C7CD] px-3 py-1.5 rounded-md font-medium cursor-pointer'>New Docs</button>
+                    <button className='bg-black hover:bg-[#606B76] cursor-pointer text-white rounded-md px-3 py-1.5 font-medium'>Logout</button>
+                </span>
+            </div>
+            {markdown && <MDXEditor key={key} className='overflow-x-hidden mx-16 rounded-xl mt-4 mb-6 bg-[#FCF9F4]' onChange={(e) => { if (e !== "") { setMarkdown(e) } }} markdown={markdown} contentEditableClassName="prose" plugins={[headingsPlugin(), listsPlugin(),
             codeBlockPlugin({ defaultCodeBlockLanguage: 'js' }),
             codeMirrorPlugin({ codeBlockLanguages: { js: 'JavaScript', css: 'CSS' } }),
             toolbarPlugin({
                 toolbarContents: () => (
                     <>
                         {' '}
-                        <div className='w-full flex items-center pb-2 border-b-2 border-[#547B79]'>
+                        <div className='w-fit flex mx-auto p-2 rounded-xl border bg-[#FCF9F4] border-[#A0A8B1]'>
                             <UndoRedo />
-                            <span className='h-[35px] -mt-1 w-[1px]' />
+                            <span className='h-8.75 -mt-1 w-px' />
                             <BlockTypeSelect />
-                            <span className='h-[35px] -mt-1 w-[1px]' />
+                            <span className='h-8.75 -mt-1 w-px' />
                             <BoldItalicUnderlineToggles />
-                            <span className='h-8 -mt-1 w-[1px]' />
+                            <span className='h-8 -mt-1 w-px' />
                             <ListsToggle />
-                            <span className='h-8 -mt-1 w-[1px]' />
+                            <span className='h-8 -mt-1 w-px' />
                             <ConditionalContents
                                 options={[
                                     {
@@ -294,61 +314,67 @@ const Editor = () => {
                                     }
                                 ]}
                             />
-                            <input id='doc_name' placeholder='Name of doc' className='bg-[#FAFAFA] w-32 text-[#191818] rounded-lg h-7 mr-2 px-2'></input>
-                            <Button className='hover:bg-[#714DFF] text-[#FAFAFA]' onClick={save_docs}>Save</Button>
-                            <Button onClick={() => setPublish(e => !e)}>Publish</Button>
-                            <Button onClick={() => delete_note(select_note_id)}>Delete</Button>
-                            <Button onClick={() => signOut()}>Logout</Button>
+                            <Dialog>
+                                <DialogTrigger className="rounded-md">Publish</DialogTrigger>
+                                <DialogContent>
+                                    <DialogHeader>
+                                        <DialogTitle>Choose Your Platform</DialogTitle>
+                                        <DialogDescription>
+                                            <h1 className='text-xl font-bold text-[#024643] text-start mt-2 mx-4'></h1>
+                                            <div className='flex justify-around px-4 mt-3'>
+                                                <button onClick={() => setSelect("medium")}><img className='h-7 w-20 object-cover object-right' src="/medium.png" alt="" /></button>
+                                                <button onClick={() => setSelect("dev-to")}><img className='h-7 mx-3' src="/dev-to.svg" alt="" /></button>
+                                                <button onClick={() => setSelect("hashnode")}><img className='h-7 mx-3' src="/hashnode.png" alt="" /></button>
+                                                <button onClick={() => setSelect("x")} value={"x"}><img className='h-7 mx-3' src="/x.png" alt="" /></button>
+                                            </div>
+                                            <div className={`${underline[select][0]} bg-[#024643] h-1 rounded-md absolute transition-all duration-200`} />
+                                            <div className='flex flex-col mx-2 my-2 mt-4'>
+                                                <div className='flex justify-between items-center'>
+                                                    <label htmlFor="" className='text-start my-1 text-[#024643] text-sm font-medium'>Auth-Token</label>
+                                                    <span onClick={deleteToken} className="material-symbols-outlined text-[19px] text-red-500 font-medium cursor-pointer mr-2">
+                                                        delete
+                                                    </span>
+                                                </div>
+                                                <input onChange={(e) => {
+                                                    setToken(prevToken => ({
+                                                        ...prevToken,
+                                                        [select]: e.target.value // Update the specific key dynamically
+                                                    }));
+                                                }} value={token[select]} type="text" className='bg-[#547B79] rounded-md px-2 py-1' />
+                                                <p className='text-[#547B79] text-start mt-4 text-sm font-medium leading-4'>Note: To generate a auth-token {underline[select][1]}</p>
+                                                <p className='text-[#547B79] text-start my-2 text-sm font-medium leading-4'>Note: We wont be getting access to any of your password and youll be able to delete the auth-token whenever you want</p>
+                                            </div>
+                                            <div className='flex flex-col px-2'>
+                                                <label htmlFor="" className='text-[#547B79] text-start mb-1 text-sm font-medium leading-4'>Title for the Blog</label>
+                                                <input type="text" onChange={(e) => setTitle(e.target.value)} placeholder='Required' className='bg-[#547B79] rounded-md px-2 py-1' />
+                                                {select == 'hashnode' && <label htmlFor="" className='text-[#547B79] text-start mb-1 text-sm font-medium leading-4'>PublicationId</label>}
+                                                {select == 'hashnode' && <input type="text" onChange={(e) =>
+                                                    setPublicationId(e.target.value)} value={hashnodePublicationId} placeholder='Required' className='bg-[#547B79] rounded-md px-2 py-1' />}
+                                                {select == 'hashnode' && <label htmlFor="" className='text-[#547B79] text-start mb-1 text-sm font-medium leading-4'>Subtitle</label>}
+                                                {select == 'hashnode' && <input type="text" value={subtitle} onChange={(e) =>
+                                                    setSubTitle(e.target.value)} placeholder='Not required' className='bg-[#547B79] rounded-md px-2 py-1' />}
+                                                {select != 'hashnode' && <label htmlFor="" className='text-[#547B79] text-start mb-1 text-sm font-medium leading-4'>Tags</label>}
+                                                {select != 'hashnode' && <input type="text" value={tags} onChange={(e) =>
+                                                    setTags(e.target.value)} placeholder='"football", "coding"' className='bg-[#547B79] rounded-md px-2 py-1' />}
+                                            </div>
+                                            <div className='flex justify-between px-4 mt-4'>
+                                                <div>
+                                                    <button className='bg-[#714DFF] mr-2 hover:bg-[#714dffd5] px-3 py-1 rounded-md text-[#FAFAFA]' onClick={saveToken}>{saveLoading ? "Processing..." : "Save"}</button>
+                                                    <button className='bg-[#714DFF] hover:bg-[#714dffd5] px-3 py-1 rounded-md text-[#FAFAFA]' onClick={postBlog}>Post</button>
+                                                </div>
+                                                <button className='bg-black hover:bg-gray-700 px-3 py-1 rounded-md text-[#FAFAFA]' onClick={() => setPublish(false)}>Close</button>
+                                            </div>
+                                        </DialogDescription>
+                                    </DialogHeader>
+                                </DialogContent>
+                            </Dialog>
                         </div>
                     </>
                 )
             })]} />}
-            <div className={`transition-all duration-500 bg-transparent w-96 ${publish ? "border-2" : ""} border-[#191818] rounded-md absolute left-[52%] top-14 overflow-hidden`} style={{ height: publish ? underline[select][2] : "0" }}>
-                <h1 className='text-xl font-bold text-[#024643] text-start mt-2 mx-4'>Choose Your Platform</h1>
-                <div className='flex justify-around px-4 mt-3'>
-                    <button onClick={() => setSelect("medium")}><img className='h-7 w-20 object-cover object-right' src="/medium.png" alt="" /></button>
-                    <button onClick={() => setSelect("dev-to")}><img className='h-7 mx-3' src="/dev-to.svg" alt="" /></button>
-                    <button onClick={() => setSelect("hashnode")}><img className='h-7 mx-3' src="/hashnode.png" alt="" /></button>
-                    <button onClick={() => setSelect("x")} value={"x"}><img className='h-7 mx-3' src="/x.png" alt="" /></button>
-                </div>
-                <div className={`${underline[select][0]} bg-[#024643] h-1 rounded-md absolute transition-all duration-200`} />
-                <div className='flex flex-col mx-2 my-2 mt-4'>
-                    <div className='flex justify-between items-center'>
-                        <label htmlFor="" className='text-start my-1 text-[#024643] text-sm font-medium'>Auth-Token</label>
-                        <span onClick={deleteToken} className="material-symbols-outlined text-[19px] text-red-500 font-medium cursor-pointer mr-2">
-                            delete
-                        </span>
-                    </div>
-                    <input onChange={(e) => {
-                        setToken(prevToken => ({
-                            ...prevToken,
-                            [select]: e.target.value // Update the specific key dynamically
-                        }));
-                    }} value={token[select]} type="text" className='bg-[#547B79] rounded-md px-2 py-1' />
-                    <p className='text-[#547B79] text-start mt-4 text-sm font-medium leading-4'>Note: To generate a auth-token {underline[select][1]}</p>
-                    <p className='text-[#547B79] text-start my-2 text-sm font-medium leading-4'>Note: We wont be getting access to any of your password and youll be able to delete the auth-token whenever you want</p>
-                </div>
-                <div className='flex flex-col px-2'>
-                    <label htmlFor="" className='text-[#547B79] text-start mb-1 text-sm font-medium leading-4'>Title for the Blog</label>
-                    <input type="text" onChange={(e) => setTitle(e.target.value)} placeholder='Required' className='bg-[#547B79] rounded-md px-2 py-1' />
-                    {select == 'hashnode' && <label htmlFor="" className='text-[#547B79] text-start mb-1 text-sm font-medium leading-4'>PublicationId</label>}
-                    {select == 'hashnode' && <input type="text" onChange={(e) =>
-                        setPublicationId(e.target.value)} value={hashnodePublicationId} placeholder='Required' className='bg-[#547B79] rounded-md px-2 py-1' />}
-                    {select == 'hashnode' && <label htmlFor="" className='text-[#547B79] text-start mb-1 text-sm font-medium leading-4'>Subtitle</label>}
-                    {select == 'hashnode' && <input type="text" value={subtitle} onChange={(e) =>
-                        setSubTitle(e.target.value)} placeholder='Not required' className='bg-[#547B79] rounded-md px-2 py-1' />}
-                    {select != 'hashnode' && <label htmlFor="" className='text-[#547B79] text-start mb-1 text-sm font-medium leading-4'>Tags</label>}
-                    {select != 'hashnode' && <input type="text" value={tags} onChange={(e) =>
-                        setTags(e.target.value)} placeholder='"football", "coding"' className='bg-[#547B79] rounded-md px-2 py-1' />}
-                </div>
-                <div className='flex justify-between px-4 mt-4'>
-                    <div>
-                        <button className='bg-[#714DFF] mr-2 hover:bg-[#714dffd5] px-3 py-1 rounded-md text-[#FAFAFA]' onClick={saveToken}>{saveLoading ? "Processing..." : "Save"}</button>
-                        <button className='bg-[#714DFF] hover:bg-[#714dffd5] px-3 py-1 rounded-md text-[#FAFAFA]' onClick={postBlog}>Post</button>
-                    </div>
-                    <button className='bg-black hover:bg-gray-700 px-3 py-1 rounded-md text-[#FAFAFA]' onClick={() => setPublish(false)}>Close</button>
-                </div>
-            </div>
+            {/* <div className={`w-96 ${publish ? "border-2" : ""} border-[#191818] rounded-md absolute left-[52%] top-14 overflow-hidden`}>
+                
+            </div> */}
         </div>
     )
 }

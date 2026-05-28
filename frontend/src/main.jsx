@@ -27,7 +27,7 @@ ReactDOM.createRoot(document.getElementById('root')).render(
       <RecoilRoot>
         <BrowserRouter>
           <Routes>
-            <Route path='/' element={<Navbar />}>
+            <Route path='/'>
               <Route path="/" element={<App />} />
             </Route>
             <Route path="/main" element={<SideBar />}>
