@@ -202,7 +202,10 @@ export function SimpleEditor() {
         onError: (error) => console.error("Upload failed:", error),
       }),
     ],
-    content,
+    content: "<h1>What's on your mind today??</h1>",
+    onTransaction({ editor, transaction }) {
+      console.log(transaction.steps)
+    }
   })
 
   const rect = useCursorVisibility({
@@ -224,8 +227,8 @@ export function SimpleEditor() {
           style={{
             ...(isMobile
               ? {
-                  bottom: `calc(100% - ${height - rect.y}px)`,
-                }
+                bottom: `calc(100% - ${height - rect.y}px)`,
+              }
               : {}),
           }}>
           {mobileView === "main" ? (

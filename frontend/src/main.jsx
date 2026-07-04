@@ -13,7 +13,6 @@ import {
 } from "react-router-dom";
 import Dashboards from './Dashboards.jsx'
 import SideBar from '../components/SideBar.jsx'
-import Navbar from '../components/Navbar.jsx'
 
 const PUBLISHABLE_KEY = import.meta.env.VITE_CLERK_PUBLISHABLE_KEY
 

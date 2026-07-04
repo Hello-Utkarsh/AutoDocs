@@ -1,14 +1,8 @@
 import { useEffect, useState } from "react";
-import { useAuth } from "@clerk/clerk-react";
+import { SignUpButton } from "@clerk/clerk-react";
 import "./App.css";
-import {
-  SignedIn,
-  SignedOut,
-  SignInButton,
-  UserButton,
-  useUser,
-} from "@clerk/clerk-react";
-import { Link, useNavigate } from "react-router-dom";
+import { SignedOut, SignInButton, useUser } from "@clerk/clerk-react";
+import { useNavigate } from "react-router-dom";
 import {
   PenLine,
   BookOpen,
@@ -19,12 +13,10 @@ import {
   Menu,
   X,
   MessageSquare,
-  FileText,
   Globe,
   CheckCircle2,
   ArrowRight,
 } from "lucide-react";
-import { Star, Heart, Cloud } from "lucide-react";
 
 function App() {
   const user = useUser();
@@ -33,7 +25,7 @@ function App() {
 
   useEffect(() => {
     if (user.isSignedIn) {
-      navigate("/main");
+      // navigate("/main");
     }
   });
 
@@ -73,12 +65,18 @@ function App() {
             </nav>
 
             <div className="hidden md:flex items-center gap-3">
-              <button className="px-4 py-2 text-sm text-foreground hover:text-primary transition-colors">
-                Sign In
-              </button>
-              <button className="px-5 py-2 bg-[#CE9C4D] hover:bg-[#C28C35] cursor-pointer text-black rounded-lg text-sm font-medium shadow-sm">
-                Start Writing
-              </button>
+              <SignedOut>
+                <SignInButton>
+                  <button className="px-4 py-2 text-sm text-foreground hover:text-primary transition-colors cursor-pointer">
+                    Sign In
+                  </button>
+                </SignInButton>
+              </SignedOut>
+              <SignUpButton>
+                <button className="px-5 py-2 bg-[#CE9C4D] hover:bg-[#C28C35] cursor-pointer text-black rounded-lg text-sm font-medium shadow-sm">
+                  Start Writing
+                </button>
+              </SignUpButton>
             </div>
 
             {/* Mobile menu button */}
@@ -139,7 +137,6 @@ function App() {
               <Sparkles className="w-4 h-4 text-primary" />
               <span>Powered by Gemini AI</span>
             </div>
-
             <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight mb-6 text-foreground">
               Write Once,
               <br />
@@ -153,6 +150,7 @@ function App() {
 
             <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
               <button className="w-full sm:w-auto px-8 py-3.5 bg-primary text-primary-foreground rounded-xl hover:bg-primary/80 transition-all shadow-lg shadow-primary/20 flex items-center justify-center gap-2 text-base font-medium">
+                {" "}
                 Start Free
                 <ArrowRight className="w-5 h-5" />
               </button>

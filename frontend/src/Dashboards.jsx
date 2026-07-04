@@ -1,6 +1,5 @@
 import React, { useState } from 'react'
 import ChatBot from '../components/ChatBot'
-import Navbar from '../components/Navbar'
 import Editor from '../components/Editor'
 
 const Dashboards = () => {
